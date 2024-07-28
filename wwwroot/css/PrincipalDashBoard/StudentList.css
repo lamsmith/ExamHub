@@ -1,0 +1,112 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.dashboard-container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+}
+
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+            .sidebar ul li a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 18px;
+            }
+
+                .sidebar ul li a:hover {
+                    text-decoration: underline;
+                }
+
+.main-content {
+    margin-left: 270px;
+    padding: 20px;
+    flex-grow: 1;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+    header h1 {
+        margin: 0;
+        font-size: 2em;
+        color: #333;
+    }
+
+    header p {
+        color: #666;
+    }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.filter-class {
+    margin: 20px 0;
+}
+
+    .filter-class label {
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .filter-class select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        box-sizing: border-box;
+    }
+
+    .filter-class button {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+        .filter-class button:hover {
+            background-color: #555;
+        }

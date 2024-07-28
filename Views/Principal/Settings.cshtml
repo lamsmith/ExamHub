@@ -1,0 +1,44 @@
+﻿@model ExamHub.ViewModel.ChangePasswordViewModel
+
+@{
+    Layout = null;
+}
+
+<title>Settings</title>
+<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+            <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+            <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+            <li><a asp-action="Logout" asp-controller="Principal">Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Settings</h1>
+            <p>Change your password</p>
+        </header>
+        <section class="change-password">
+            <form asp-action="ChangePassword" asp-controller="Principal" method="post">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword" name="CurrentPassword" />
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword" name="NewPassword" />
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmPassword" name="ConfirmPassword" />
+                </div>
+                <button type="submit">Change Password</button>
+            </form>
+        </section>
+    </div>
+</div>

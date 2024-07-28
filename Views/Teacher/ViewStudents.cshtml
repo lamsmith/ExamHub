@@ -1,0 +1,27 @@
+﻿@model ExamHub.ViewModel.ClassStudentsViewModel
+
+@{
+    ViewData["Title"] = "View Students";
+    Layout = null;
+}
+
+<h2>View Students</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Username</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>@student.StudentId</td>
+                <td>@student.StudentName</td>
+               
+            </tr>
+        }
+    </tbody>
+</table>

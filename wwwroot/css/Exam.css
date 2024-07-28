@@ -1,0 +1,57 @@
+﻿.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.mt-5 {
+    margin-top: 3rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-check {
+    margin-bottom: 0.5rem;
+}
+
+.form-check-input {
+    margin-right: 0.5rem;
+}
+
+.btn {
+    margin-top: 1rem;
+    align-self: flex-end;
+}
+
+.list-group {
+    margin-top: 1rem;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .list-group-item a {
+        text-decoration: none;
+        color: #007bff;
+    }
+
+        .list-group-item a:hover {
+            text-decoration: underline;
+        }

@@ -1,0 +1,49 @@
+﻿@model ExamHub.ViewModel.PrincipalDashboardViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Dashboard</title>
+    <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+                <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+                <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+                <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+                <li><a asp-action="Logout" asp-controller="Principal">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <header>
+                <h1>Welcome, @Model.PrincipalName</h1>
+                <p>Your dashboard overview</p>
+            </header>
+            <section class="cards">
+                <div class="card">
+                    <h3>Total Teachers</h3>
+                    <p>@Model.TotalTeachers</p>
+                </div>
+                <div class="card">
+                    <h3>Total Students</h3>
+                    <p>@Model.TotalStudents</p>
+                </div>
+                <div class="card">
+                    <h3>Classes</h3>
+                  
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

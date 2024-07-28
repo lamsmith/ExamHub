@@ -1,0 +1,111 @@
+﻿@model ExamHub.ViewModel.SetExamViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Exam</title>
+    <link rel="stylesheet" href="~/css/SetExam.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a asp-action="Dashboard" asp-controller="Teacher">Home</a></li>
+                <li><a asp-action="SetExam" asp-controller="Teacher">Set Exam</a></li>
+                <li><a asp-action="ViewClass" asp-controller="Teacher">View Class</a></li>
+                <li><a asp-action="ViewExamScores" asp-controller="Teacher">View Exam Scores</a></li>
+                <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <header>
+                <h1>Set Exam</h1>
+                <p>Fill in the details to create a new exam</p>
+            </header>
+            <section>
+                <form asp-action="SetExam" method="post" onsubmit="return validateDates()">
+                    <div class="form-group">
+                        <label asp-for="ExamName">Exam Name</label>
+                        <input asp-for="ExamName" class="form-control" />
+                        <span asp-validation-for="ExamName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ClassId">Class</label>
+                        <select asp-for="ClassId" class="form-control">
+                            <option value="">Select Class</option>
+                            @foreach (var cls in Model.Classes)
+                            {
+                                <option value="@cls.Id">@cls.ClassName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ClassId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubjectId">Subject</label>
+                        <select asp-for="SubjectId" class="form-control">
+                            <option value="">Select Subject</option>
+                            @foreach (var subject in Model.Subjects)
+                            {
+                                <option value="@subject.Id">@subject.SubjectName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="SubjectId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StartTime">Start Time</label>
+                        <input asp-for="StartTime" class="form-control" type="datetime-local" id="start-time" />
+                        <span asp-validation-for="StartTime" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndTime">End Time</label>
+                        <input asp-for="EndTime" class="form-control" type="datetime-local" id="end-time" />
+                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Set Exam</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function validateDates() {
+            var startTime = document.getElementById('start-time').value;
+            var endTime = document.getElementById('end-time').value;
+            var currentTime = new Date().toISOString().slice(0, 16);
+
+            if (startTime < currentTime) {
+                alert("Start time cannot be in the past.");
+                return false;
+            }
+
+            if (endTime < startTime) {
+                alert("End time cannot be before the start time.");
+                return false;
+            }
+
+            var start = new Date(startTime);
+            var end = new Date(endTime);
+            var diff = (end - start) / 1000 / 60 / 60; // Difference in hours
+
+            if (diff > 4) {
+                alert("Exam duration cannot be more than 4 hours.");
+                return false;
+            }
+
+            if (start.toDateString() !== end.toDateString()) {
+                alert("Start time and end time must be on the same day.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>

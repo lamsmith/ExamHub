@@ -1,0 +1,93 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.dashboard-container {
+    display: flex;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+}
+
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+            .sidebar ul li a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 18px;
+            }
+
+                .sidebar ul li a:hover {
+                    text-decoration: underline;
+                }
+
+.main-content {
+    margin-left: 270px;
+    padding: 20px;
+    flex-grow: 1;
+    background-color: #fff;
+    min-height: 100vh;
+}
+
+header {
+    margin-bottom: 20px;
+}
+
+    header h1 {
+        margin: 0;
+        font-size: 2em;
+        color: #333;
+    }
+
+    header p {
+        color: #666;
+    }
+
+.change-password .form-group {
+    margin-bottom: 15px;
+}
+
+.change-password label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.change-password input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+.change-password button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+    .change-password button:hover {
+        background-color: #555;
+    }

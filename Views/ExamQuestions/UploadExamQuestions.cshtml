@@ -1,0 +1,83 @@
+﻿@using ExamHub.DTO
+@model List<ExamHub.DTO.UploadedQuestion>
+
+@{
+    ViewData["Title"] = "Upload Exam Questions";
+
+    int examId = ViewBag.ExamId ?? 0;
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Exam Questions</title>
+    <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a asp-action="Dashboard" asp-controller="Teacher">Home</a></li>
+                <li><a asp-action="SetExam" asp-controller="Teacher">Set Exam</a></li>
+                <li><a asp-action="ViewClass" asp-controller="Teacher">View Class</a></li>
+                <li><a asp-action="ViewExamScores" asp-controller="Teacher">View Exam Scores</a></li>
+                <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <header>
+                <h1>Upload Exam Questions</h1>
+            </header>
+            <section>
+                <form asp-action="UploadExamQuestions" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="examId" value="@examId" />
+                    <div class="form-group">
+                        <label for="file">Upload Excel File</label>
+                        <input type="file" name="file" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload and Preview</button>
+                </form>
+
+                @if (ViewBag.ExcelData != null)
+                {
+                    <form asp-action="SaveExamQuestions" method="post">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Question No</th>
+                                    <th>Question Text</th>
+                                    <th>Option A</th>
+                                    <th>Option B</th>
+                                    <th>Option C</th>
+                                    <th>Option D</th>
+                                    <th>Correct Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var question in ViewBag.ExcelData)
+                                {
+                                    <tr>
+                                        <td>@question.QuestionNo</td>
+                                        <td>@question.QuestionText</td>
+                                        <td>@question.Options[0]</td> <!-- Option A -->
+                                        <td>@question.Options[1]</td> <!-- Option B -->
+                                        <td>@question.Options[2]</td> <!-- Option C -->
+                                        <td>@question.Options[3]</td> <!-- Option D -->
+                                        <td>@question.CorrectAnswer</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <input type="hidden" name="examId" value="@examId" />
+                        <button type="submit" class="btn btn-success">Save Questions</button>
+                    </form>
+                }
+            </section>
+        </div>
+    </div>
+</body>
+</html>

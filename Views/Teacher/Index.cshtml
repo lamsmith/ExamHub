@@ -1,0 +1,55 @@
+﻿@model ExamHub.ViewModel.TeacherDashboardViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Principal Dashboard</title>
+    <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a asp-action="Dashboard" asp-controller="Teacher">Home</a></li>
+                <li><a asp-action="SetExam" asp-controller="Teacher">Set Exam</a></li>
+                <li><a asp-action="ViewClass" asp-controller="Teacher">View Class</a></li>
+                <li><a asp-action="ViewExamScores" asp-controller="Teacher">View Exam Scores</a></li>
+                <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <header>
+                <h1>Welcome, @Model.TeacherName</h1>
+                <p>Your dashboard overview</p>
+            </header>
+            <section class="cards">
+                <div class="card">
+                    <h3>Classes</h3>
+                    <ul>
+                        @foreach (var cls in Model.Classes)
+                        {
+                            <li>@cls.ClassName</li>
+                        }
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Subjects</h3>
+                    <ul>
+                        @foreach (var subject in Model.Subjects)
+                        {
+                            <li>@subject.SubjectName</li>
+                        }
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+﻿@model ExamHub.ViewModel.ExamScoresViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="container">
+    <h2>Exam: @Model.ExamName</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var score in Model.StudentExamScores)
+            {
+                <tr>
+                    <td>@score.StudentId</td>
+                    <td>@score.StudentName</td>
+                    <td>@score.Score</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

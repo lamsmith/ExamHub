@@ -1,0 +1,73 @@
+﻿@model ExamHub.ViewModel.TeacherViewModel
+
+@{
+    Layout = null;
+}
+
+<title>Teacher List</title>
+<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+            <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+            <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+            <li><a asp-action="Logout" asp-controller="Principal">Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Teacher List</h1>
+            <p>Manage teachers and assign them to classes</p>
+            <a class="btn btn-primary" asp-action="CreateTeacher" asp-controller="Principal">Create Teacher</a> 
+        </header>
+        <section class="teacher-list">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var teacher in Model.Teachers)
+                    {
+                        <tr>
+                            <td>@teacher.FristName @teacher.LastName</td>
+                            <td>
+                                @if (teacher.Class != null && teacher.Class.Any())
+                                {
+                                    @foreach (var clas in teacher.Class)
+                                    {
+                                        <div>@clas.ClassName</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div>No Classes Assigned</div>
+                                }
+                            </td>
+                            <td>
+                                @if (teacher.Subjects != null && teacher.Subjects.Any())
+                                {
+                                    @foreach (var subject in teacher.Subjects)
+                                    {
+                                        <div>@subject.SubjectName</div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div>No Subjects Assigned</div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>

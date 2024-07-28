@@ -1,0 +1,66 @@
+﻿@model ExamHub.DTO.CreateExamQuestionRequestModel
+
+@{
+    ViewData["Title"] = "View All Questions";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Questions</title>
+    <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a asp-action="Dashboard" asp-controller="Teacher">Home</a></li>
+                <li><a asp-action="SetExam" asp-controller="Teacher">Set Exam</a></li>
+                <li><a asp-action="ViewClass" asp-controller="Teacher">View Class</a></li>
+                <li><a asp-action="ViewExamScores" asp-controller="Teacher">View Exam Scores</a></li>
+                <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <header>
+                <h1>All Questions</h1>
+            </header>
+            <section>
+                <table class="table">
+                    <thead>
+                        <tr>
+                           
+                            <th>Question No</th>
+                            <th>Question Text</th>
+                            <th>Option A</th>
+                            <th>Option B</th>
+                            <th>Option C</th>
+                            <th>Option D</th>
+                            <th>Correct Answer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var question in Model.UploadedQuestions)
+                        {
+                            <tr>
+                                
+                                <td>@question.QuestionNo</td>
+                                <td>@question.QuestionText</td>
+                                <td>@question.OptionA</td>
+                                <td>@question.OptionB</td>
+                                <td>@question.OptionC</td>
+                                <td>@question.OptionD</td>
+                                <td>@question.CorrectAnswer</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

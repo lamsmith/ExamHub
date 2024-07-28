@@ -1,0 +1,62 @@
+﻿@model ExamHub.ViewModel.PrincipalDashboardViewModel
+
+@{
+    Layout = null;
+}
+
+<title>Student List</title>
+<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+            <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+            <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+            <li><a asp-action="Logout" asp-controller="Principal">Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Student List</h1>
+            <p>Manage students and view them by class</p>
+            <a class="btn btn-primary" asp-action="CreateStudent" asp-controller="Principal">Create Student</a>
+        </header>
+        <section class="filter-class">
+            <form asp-action="ViewStudents" asp-controller="Principal" method="get">
+                <label for="classId">Select Class:</label>
+                <select id="classId" name="classId">
+                    @foreach (var cls in Model.Classes)
+                    {
+                        <option value="@cls.Id">@cls.ClassName</option>
+                    }
+                </select>
+                <button type="submit">Filter</button>
+            </form>
+        </section>
+        <section class="student-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Class</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.Students)
+                    {
+                        <tr>
+                            <td>@student.FristName @student.LastName</td>
+                            @foreach (var cls in student.Class)
+                            {
+                                <td>@cls.ClassName</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>

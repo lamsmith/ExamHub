@@ -1,0 +1,83 @@
+﻿@model ExamHub.ViewModel.CreateTeacherViewModel
+
+@{
+    Layout = null;
+}
+
+<title>Create Teacher</title>
+<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+            <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+            <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+            <li><a asp-action="Logout" asp-controller="Principal">Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <header>
+            <h1>Create Teacher</h1>
+        </header>
+        <section class="create-teacher">
+            <form asp-action="CreateTeacher" asp-controller="Principal" method="post">
+                <div class="form-group">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="FirstName" required />
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" name="LastName" required />
+                </div>
+                <div class="form-group">
+                    <label for="userName">Username:</label>
+                    <input type="text" id="userName" name="UserName" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="Password" required />
+                </div>
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth:</label>
+                    <input type="date" id="dateOfBirth" name="DateOfBirth" required />
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="Gender" required>
+                        <option value="0">Male</option>
+                        <option value="1">Female</option>
+                        <option value="2">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="classId">Class:</label>
+                    <select id="classId" name="ClassId" required>
+                        @if (Model.Classes != null && Model.Classes.Any())
+                        {
+                            @foreach (var cls in Model.Classes)
+                            {
+                                <option value="@cls.Id">@cls.ClassName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subjectId">Subject:</label>
+                    <select id="subjectId" name="SubjectId" required>
+                        @if (Model.Subjects != null && Model.Subjects.Any())
+                        {
+                            @foreach (var subject in Model.Subjects)
+                            {
+                                <option value="@subject.Id">@subject.SubjectName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <button type="submit">Create Teacher</button>
+            </form>
+        </section>
+    </div>
+</div>

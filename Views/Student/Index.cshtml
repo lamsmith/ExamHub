@@ -1,0 +1,63 @@
+﻿@model ExamHub.ViewModel.StudentDashboardViewModel
+
+@{
+    ViewData["Title"] = "Student Dashboard";
+    Layout = null;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Student Dashboard</h1>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <a class="btn btn-primary btn-block" asp-action="Dashboard" asp-controller="Student">Dashboard</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="btn btn-primary btn-block" asp-action="Exams" asp-controller="Student">Exams</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="btn btn-primary btn-block" asp-action="Results" asp-controller="Student">Results</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="btn btn-primary btn-block" asp-action="Schedule" asp-controller="Student">Schedule</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="btn btn-primary btn-block" asp-action="Profile" asp-controller="Student">Profile</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="btn btn-primary btn-block" asp-action="Notifications" asp-controller="Student">Notifications</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="btn btn-danger btn-block" asp-action="Logout" asp-controller="Account">Logout</a>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Upcoming Exams</h2>
+            <ul>
+                @foreach (var exam in Model.UpcomingExams)
+                {
+                    <li>@exam.ExamName - @exam.DateTime</li>
+                }
+            </ul>
+        </div> 
+      @*   <div class="col-md-12">
+            <h2>Recent Results</h2>
+            <ul>
+                @foreach (var result in Model.RecentResults)
+                {
+                    <li>@result.ExamName - @result.Score</li>
+                }
+            </ul>
+        </div> 
+        <div class="col-md-12">
+            <h2>Notifications</h2>
+            <ul>
+                @foreach (var notification in Model.Notifications)
+                {
+                    <li>@notification.Message</li>
+                }
+            </ul>
+        </div> *@
+        </div>
+</div>

@@ -1,0 +1,29 @@
+﻿@model ExamHub.ViewModel.TakeExamViewModel
+
+@{
+    ViewData["Title"] = "Take Exam";
+    Layout = null;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@Model.ExamName</h1>
+    <form asp-action="SubmitExam" method="post">
+        <input type="hidden" asp-for="ExamId" />
+        @foreach (var question in Model.Questions)
+        {
+            <div class="mb-3">
+                <h4>@question.QuestionText</h4>
+                <div class="form-check">
+                    @foreach (var option in question.Options)
+                    {
+                        <input class="form-check-input" type="radio" name="Questions[@Model.Questions.IndexOf(question)].SelectedOptionId" value="@option.OptionId" />
+                        <label class="form-check-label">
+                            @option.OptionText
+                        </label>
+                    }
+                </div>
+            </div>
+        }
+        <button type="submit" class="btn btn-success">Submit Exam</button>
+    </form>
+</div>

@@ -1,0 +1,25 @@
+﻿@model ExamHub.ViewModel.ExamsViewModel
+
+@{
+    ViewData["Title"] = "Exams";
+    Layout = null;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">Exams</h1>
+    <ul class="list-group">
+        @if (Model.Exams != null && Model.Exams.Any())
+        {
+            @foreach (var exam in Model.Exams)
+            {
+                <li class="list-group-item">
+                    <a asp-action="TakeExam" asp-route-examId="@exam.Id">@exam.ExamName</a> - @exam.DateTime
+                </li>
+            }
+        }
+        else
+        {
+            <li class="list-group-item">No exams available</li>
+        }
+    </ul>
+</div>
