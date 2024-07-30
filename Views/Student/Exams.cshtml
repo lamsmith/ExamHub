@@ -13,7 +13,7 @@
             @foreach (var exam in Model.Exams)
             {
                 <li class="list-group-item">
-                    <a asp-action="TakeExam" asp-route-examId="@exam.Id">@exam.ExamName</a> - @exam.DateTime
+                    <a asp-action="TakeExam" asp-route-examId="@exam.Id">@exam.ExamName</a> - @exam.StartTime
                 </li>
             }
         }

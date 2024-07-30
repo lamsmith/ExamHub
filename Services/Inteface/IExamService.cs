@@ -14,7 +14,7 @@ namespace ExamHub.Services.Inteface
         void SaveStudentAnswer(StudentAnswer studentAnswer);
         void SaveStudentExam(StudentExam studentExam);
         IEnumerable<ExamResponseModel> GetExamsForStudent(int studentId);
-        IEnumerable<ExamResponseModel> GetUpcomingExamsByStudent(int studentId);
+        IEnumerable<ExamResponseModel> GetUpcomingExamsByClass(int classId);
         Exam GetExamById(int id);
         void UpdateExam(Exam exam);
         void DeleteExam(int id);

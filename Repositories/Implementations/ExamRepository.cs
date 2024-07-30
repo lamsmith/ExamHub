@@ -119,13 +119,26 @@ namespace ExamHub.Repositories.Implementation
                 .Where(e => e.StudentExams.Any(se => se.StudentId == studentId))
                 .ToList();
         }
-        public IEnumerable<Exam> GetUpcomingExamsByStudent(int studentId)
+        public IEnumerable<Exam> GetUpcomingExamsByClass(int classId)
         {
-            var now = DateTime.Now; // Using UTC for consistency
-            return _context.Exams
-                .Include(e => e.StudentExams) // Eager loading related data
-                .Where(e => e.DateTime > now && e.StudentExams.Any(se => se.StudentId == studentId))
+            var now = DateTime.Now;
+
+            // Get all exams that belong to the specified class and have a StartTime greater than now
+            var upcomingExams = _context.Exams
+                .Where(e => e.ClassId == classId && e.StartTime > now)
                 .ToList();
+
+            Console.WriteLine($"Upcoming Exams for Class {classId}: {upcomingExams.Count}");
+
+ 
+
+            // Log details of upcoming exams
+            foreach (var exam in upcomingExams)
+            {
+                Console.WriteLine($"Exam Id: {exam.Id}, StartTime: {exam.StartTime}");
+            }
+
+            return upcomingExams;
         }
 
 

@@ -66,9 +66,9 @@ namespace ExamHub.Services.Implementations
             }); 
         }
 
-        public IEnumerable<ExamResponseModel> GetUpcomingExamsByStudent(int studentId)
+        public IEnumerable<ExamResponseModel> GetUpcomingExamsByClass(int classId)
         {
-            var upcomingExam = _examRepository.GetUpcomingExamsByStudent(studentId);
+            var upcomingExam = _examRepository.GetUpcomingExamsByClass(classId);
             return upcomingExam.Select(e => new ExamResponseModel
             {
                  ExamName = e.ExamName,
@@ -121,7 +121,7 @@ namespace ExamHub.Services.Implementations
                 ExamName = exam.ExamName,
                 CreatedByTeacherId = teacher.Id,
                 SubjectId = exam.SubjectId,
-                DateTime = DateTime.Now,
+                CreatedAt = DateTime.Now,
                 StartTime = exam.StartTime,
                 EndTime = exam.EndTime,
                 ClassId = exam.ClassId,

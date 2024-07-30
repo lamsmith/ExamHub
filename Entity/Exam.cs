@@ -9,7 +9,7 @@ namespace ExamHub.Entity
         public int CreatedByTeacherId { get; set; }
         public Teacher CreatedByTeacher { get; set; }
         public int SubjectId { get; set; }
-        public DateTime DateTime { get; set; }
+       // public DateTime DateTime { get; set; }
         public Subject Subject { get; set; }
         public int ClassId { get; set; }
         public Class Class { get; set; }

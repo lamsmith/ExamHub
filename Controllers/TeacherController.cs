@@ -75,7 +75,7 @@ namespace ExamHub.Controllers
                  CreatedByTeacherId = model.CreatedByTeacherId,
                  ClassId = model.ClassId,
                  SubjectId = model.SubjectId,
-                 DateTime = DateTime.Now, 
+                 CreatedAt = DateTime.Now,
                  StartTime = model.StartTime,
                  EndTime = model.EndTime,
                  CreatedBy = User.FindFirstValue(ClaimTypes.NameIdentifier)

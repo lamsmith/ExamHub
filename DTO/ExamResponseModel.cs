@@ -10,7 +10,7 @@ namespace ExamHub.DTO
         public int CreatedByTeacherId { get; set; }
         public string  CreatedByTeacher { get; set; }
         public int SubjectId { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime CreatedAt { get; set; }
         public string  Subject { get; set; }
         public int ClassId { get; set; }
         public string  Class { get; set; }

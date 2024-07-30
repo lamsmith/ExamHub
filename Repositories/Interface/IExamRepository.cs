@@ -17,7 +17,7 @@ namespace ExamHub.Repositories.Interface
         void SaveStudentAnswer(StudentAnswer studentAnswer);
         void SaveStudentExam(StudentExam studentExam);
         IEnumerable<Exam> GetExamsForStudent(int studentId);
-        IEnumerable<Exam> GetUpcomingExamsByStudent(int studentId);
+        IEnumerable<Exam> GetUpcomingExamsByClass(int classId);
        // IEnumerable<ExamResult> GetRecentExamResults(int studentId);
 
     }

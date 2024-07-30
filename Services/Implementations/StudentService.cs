@@ -36,7 +36,7 @@ namespace ExamHub.Services.Implementations
             {
                 Id = e.Id,
                 ExamName = e.ExamName,
-                DateTime = e.DateTime,
+                CreatedAt = DateTime.Now,
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
               
@@ -83,7 +83,7 @@ namespace ExamHub.Services.Implementations
             {
                 Id = e.Id,
                 ExamName = e.ExamName,
-                DateTime = e.DateTime,
+                CreatedAt = DateTime.Now,
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
               

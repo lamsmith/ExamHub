@@ -42,18 +42,36 @@ namespace ExamHub.Controllers
                     ClassName = x.Class.ClassName,
                     Exams = x.Class.Exams.Select(x => new ExamResponseModel
                     {
-                        DateTime = x.DateTime,
+                        CreatedAt = DateTime.Now,
                         StartTime = x.StartTime,
                         Subject = x.Subject.SubjectName
                     }).ToList()
                 }
                  ).ToList(),
-                UpcomingExams = _examService.GetUpcomingExamsByStudent(student.Id),
+              //  UpcomingExams = _examService.GetUpcomingExamsByStudent(student.Id),
               //  RecentResults = _studentService.GetRecentExamResults(studentId),
               //  Notifications = _notificationService.GetNotificationsForStudent(studentId)
             };
 
-            
+            // Aggregate upcoming exams for all classes the student is enrolled in
+            var upcomingExams = new List<ExamResponseModel>();
+            foreach (var classStudent in student.ClassStudents)
+            {
+                var classUpcomingExams = _examService.GetUpcomingExamsByClass(classStudent.ClassId)
+                    .Select(e => new ExamResponseModel
+                    {
+                        ExamName = e.ExamName,
+                        StartTime = e.StartTime,
+                        Subject = e.Subject
+                    });
+
+                upcomingExams.AddRange(classUpcomingExams);
+            }
+
+            // Assign the aggregated upcoming exams to the dashboard view model
+            dashboardViewModel.UpcomingExams = upcomingExams;
+
+
 
 
             return View(dashboardViewModel);
@@ -134,7 +152,7 @@ namespace ExamHub.Controllers
                     {
                         Id = e.Id,
                         ExamName = e.ExamName,
-                        DateTime = e.DateTime,
+                        CreatedAt = DateTime.Now,
         
                     }).ToList();
 

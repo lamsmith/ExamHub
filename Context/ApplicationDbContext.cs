@@ -161,7 +161,7 @@ namespace ExamHub.Context
                 );
 
             modelBuilder.Entity<Exam>().HasData(
-                new Exam { Id = 1, ClassId = 1, CreatedByTeacherId = 1, ExamName = "frist term", SubjectId = 1, CreatedBy = "1", CreatedAt = DateTime.Now , DateTime = DateTime.Parse("08/29/2024 05:50")         
+                new Exam { Id = 1, ClassId = 1, CreatedByTeacherId = 1, ExamName = "frist term", SubjectId = 1, CreatedBy = "1", CreatedAt = DateTime.Now        
                  }
                  );
 

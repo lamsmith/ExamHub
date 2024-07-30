@@ -43,7 +43,7 @@ namespace ExamHub.Services.Implementations
                 Id = e.Id,
                 ExamName = e.ExamName,
                 Subject = e.Subject.SubjectName,
-                DateTime = e.DateTime,
+                CreatedAt = DateTime.Now,
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
              
