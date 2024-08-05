@@ -5,52 +5,50 @@
     Layout = null;
 }
 
+<head>
+    <link rel="stylesheet" href="~/css/Student.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+
+
 <div class="container mt-5">
-    <h1 class="mb-4">Student Dashboard</h1>
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <a class="btn btn-primary btn-block" asp-action="Dashboard" asp-controller="Student">Dashboard</a>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="path/to/your/logo.png" alt="Logo" class="logo">
         </div>
-        <div class="col-md-4 mb-3">
-            <a class="btn btn-primary btn-block" asp-action="Exams" asp-controller="Student">Exams</a>
-        </div>
-        <div class="col-md-4 mb-3">
-            <a class="btn btn-primary btn-block" asp-action="Results" asp-controller="Student">Results</a>
-        </div>
-        <div class="col-md-4 mb-3">
-            <a class="btn btn-primary btn-block" asp-action="Schedule" asp-controller="Student">Schedule</a>
-        </div>
-        <div class="col-md-4 mb-3">
-            <a class="btn btn-primary btn-block" asp-action="Profile" asp-controller="Student">Profile</a>
-        </div>
-        <div class="col-md-4 mb-3">
-            <a class="btn btn-primary btn-block" asp-action="Notifications" asp-controller="Student">Notifications</a>
-        </div>
-        <div class="col-md-4 mb-3">
-            <a class="btn btn-danger btn-block" asp-action="Logout" asp-controller="Account">Logout</a>
-        </div>
+        <ul class="sidebar-menu">
+            <li><a class="sidebar-link" asp-action="Dashboard" asp-controller="Student"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a class="sidebar-link" asp-action="Exams" asp-route-classId = "@Model.CurrentClassId"  asp-controller="Student"><i class="fas fa-book"></i> Exams</a></li>
+            <li><a class="sidebar-link" asp-action="Results" asp-controller="Student"><i class="fas fa-chart-bar"></i> Results</a></li>
+            <li><a class="sidebar-link" asp-action="Schedule" asp-controller="Student"><i class="fas fa-calendar-alt"></i> Schedule</a></li>
+            <li><a class="sidebar-link" asp-action="Profile" asp-controller="Student"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a class="sidebar-link" asp-action="Notifications" asp-controller="Student"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li><a class="sidebar-link logout" asp-action="Logout" asp-controller="Account"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
     </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Upcoming Exams</h2>
+    <div class="content">
+        <h1 class="mb-4">Student Dashboard</h1>
+        <div class="section">
+          <h2>Upcoming Exams</h2>
             <ul>
                 @foreach (var exam in Model.UpcomingExams)
                 {
-                    <li>@exam.ExamName - @exam.StartTime</li>
+                    var now = DateTime.Now;
+                    bool isOngoing = exam.StartTime <= now && exam.EndTime >= now;
+
+                    <li>
+                        @exam.Subject - @exam.StartTime - @exam.EndTime
+                        @if (isOngoing)
+                        {
+                            <span style="color: red;">(Ongoing)</span>
+                        }
+                    </li>
                 }
             </ul>
-        </div> 
-      @*   <div class="col-md-12">
-            <h2>Recent Results</h2>
-            <ul>
-                @foreach (var result in Model.RecentResults)
-                {
-                    <li>@result.ExamName - @result.Score</li>
-                }
-            </ul>
-        </div> 
-        <div class="col-md-12">
+
+        </div>
+      @*   <div class="section">
             <h2>Notifications</h2>
             <ul>
                 @foreach (var notification in Model.Notifications)
@@ -59,5 +57,5 @@
                 }
             </ul>
         </div> *@
-        </div>
+    </div>
 </div>

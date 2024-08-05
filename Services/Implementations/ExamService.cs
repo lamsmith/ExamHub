@@ -51,20 +51,24 @@ namespace ExamHub.Services.Implementations
                   
             });
         }
-
-        public IEnumerable<ExamResponseModel> GetExamsForStudent(int studentId)
+        public IEnumerable<ExamResponseModel> GetExamsForStudent(int classId)
         {
-            var getExamsForStudent = _examRepository.GetExamsForStudent(studentId);
-            return getExamsForStudent.Select(e => new ExamResponseModel
-            {              
+            var exams = _examRepository.GetExamsForStudent(classId);
+            return exams.Select(e => new ExamResponseModel
+            {
+                Id = e.Id,
+                
                 ExamName = e.ExamName,
                 ExamQuestions = e.ExamQuestions,
                 StartTime = e.StartTime,
                 EndTime = e.EndTime,
                 ClassId = e.ClassId,
                 SubjectId = e.SubjectId,
-            }); 
+                Subject = e.Subject.SubjectName 
+            });
         }
+
+
 
         public IEnumerable<ExamResponseModel> GetUpcomingExamsByClass(int classId)
         {
@@ -74,6 +78,7 @@ namespace ExamHub.Services.Implementations
                  ExamName = e.ExamName,
                  StartTime = e.StartTime,
                  EndTime = e.EndTime,
+                 Subject = e.Subject.SubjectName
 
             });       
         }

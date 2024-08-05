@@ -90,7 +90,8 @@ namespace ExamHub.Repositories.Implementations
 
         public void AssignStudentToClass(int studentId, int classId)
         {
-            var assignStudentClass = new ClassStudent { StudentId = studentId, ClassId = classId };
+            var assignStudentClass = new ClassStudent { StudentId = studentId, ClassId = classId , DateJoin = DateTime.Now };
+            
 
             _context.Add(assignStudentClass);
             _context.SaveChanges();

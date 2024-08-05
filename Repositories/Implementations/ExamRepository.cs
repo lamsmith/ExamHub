@@ -90,8 +90,12 @@ namespace ExamHub.Repositories.Implementation
 
         public IEnumerable<ExamQuestion> GetQuestionsByExamId(int examId)
         {
-            throw new NotImplementedException();
+            return _context.ExamQuestions
+                .Include(q => q.Options)
+                .Where(q => q.ExamId == examId)
+                .ToList();
         }
+
 
         public void SaveStudentAnswer(StudentAnswer studentAnswer)
         {
@@ -112,42 +116,49 @@ namespace ExamHub.Repositories.Implementation
         //        .ToList();
         //}
 
-        public IEnumerable<Exam> GetExamsForStudent(int studentId)
+        public IEnumerable<Exam> GetExamsForStudent(int classId)
         {
-            return _context.Exams
-                .Include(e => e.StudentExams) // Eager loading related data
-                .Where(e => e.StudentExams.Any(se => se.StudentId == studentId))
+            var today = DateTime.Today;
+
+            var examForStudent = _context.Exams
+                
+                .Include(e => e.Subject)
+                .Where(e => e.ClassId == classId && e.StartTime.Date == today)
                 .ToList();
+
+            return examForStudent;
+
+
+            //var classIds = _context.ClassStudents
+            //                       .Where(cs => cs.StudentId == studentId)
+            //                       .Select(cs => cs.ClassId)
+            //                       .ToList();
+
+            //return _context.Exams
+            //               .Include(e => e.Subject) // Include the Subject entity if needed
+            //               .Where(e => classIds.Contains(e.ClassId))
+            //               .ToList();
         }
+
         public IEnumerable<Exam> GetUpcomingExamsByClass(int classId)
         {
             var now = DateTime.Now;
 
-            // Get all exams that belong to the specified class and have a StartTime greater than now
+           
             var upcomingExams = _context.Exams
-                .Where(e => e.ClassId == classId && e.StartTime > now)
+                .Include(e => e.Subject) 
+                .Where(e => e.ClassId == classId && e.EndTime > now)
                 .ToList();
 
-            Console.WriteLine($"Upcoming Exams for Class {classId}: {upcomingExams.Count}");
+            //Console.WriteLine($"Upcoming and Ongoing Exams for Class {classId}: {upcomingExams.Count}");
 
- 
-
-            // Log details of upcoming exams
-            foreach (var exam in upcomingExams)
-            {
-                Console.WriteLine($"Exam Id: {exam.Id}, StartTime: {exam.StartTime}");
-            }
+         
+            //foreach (var exam in upcomingExams)
+            //{
+            //    Console.WriteLine($"Exam Id: {exam.Id}, StartTime: {exam.StartTime}, EndTime: {exam.EndTime}, Subject: {exam.Subject.SubjectName}");
+            //}
 
             return upcomingExams;
         }
-
-
-        //public IEnumerable<Exam> GetUpcomingExamsByStudent(int studentId)
-        //{
-        //    var now = DateTime.Now;
-        //    return _context.Exams
-        //        .Where(e => e.DateTime > now && e.StudentExams.Any(se => se.StudentId == studentId))
-        //        .ToList();
-        //}
     }
 }

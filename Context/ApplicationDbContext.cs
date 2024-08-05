@@ -58,11 +58,12 @@ namespace ExamHub.Context
                 .HasForeignKey(s => s.CreatedByPrincipalId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
             modelBuilder.Entity<ExamQuestion>()
                .HasMany(eq => eq.Options)
                .WithOne(o => o.ExamQuestion)
                .HasForeignKey(o => o.ExamQuestionId);
+
+
 
 
 
@@ -161,8 +162,9 @@ namespace ExamHub.Context
                 );
 
             modelBuilder.Entity<Exam>().HasData(
-                new Exam { Id = 1, ClassId = 1, CreatedByTeacherId = 1, ExamName = "frist term", SubjectId = 1, CreatedBy = "1", CreatedAt = DateTime.Now        
-                 }
+                new Exam { Id = 1, ClassId = 1, CreatedByTeacherId = 1, ExamName = "frist term", SubjectId = 1, CreatedBy = "1", CreatedAt = DateTime.Now,
+                    StartTime = DateTime.Parse("08/04/2024 15:30"), EndTime = DateTime.Parse("08/04/2024 17:30")
+                }
                  );
 
             modelBuilder.Entity<ExamQuestion>().HasData(

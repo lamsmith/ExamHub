@@ -10,5 +10,6 @@ namespace ExamHub.Entity
         public Class Class { get; set; }
         public int StudentId { get; set; }
         public Student Student { get; set; }
+        public DateTime DateJoin { get; set; }
     }
 }

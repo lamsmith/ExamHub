@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamHub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240727235159_init")]
+    [Migration("20240804143141_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 1,
                             ClassName = "JSS 1",
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4555),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9232),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -65,7 +65,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 2,
                             ClassName = "JSS 2",
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4563),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9236),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -73,7 +73,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 3,
                             ClassName = "JSS 3",
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4568),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9238),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -81,7 +81,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 4,
                             ClassName = "SSS 1",
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4572),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9240),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -89,7 +89,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 5,
                             ClassName = "SSS 2",
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4578),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9242),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         });
@@ -103,6 +103,9 @@ namespace ExamHub.Migrations
 
                     b.Property<int>("ClassId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DateJoin")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
@@ -120,6 +123,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 1,
                             ClassId = 1,
+                            DateJoin = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StudentId = 1
                         });
                 });
@@ -201,9 +205,6 @@ namespace ExamHub.Migrations
                     b.Property<int>("CreatedByTeacherId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime(6)");
 
@@ -238,13 +239,12 @@ namespace ExamHub.Migrations
                         {
                             Id = 1,
                             ClassId = 1,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4891),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9659),
                             CreatedBy = "1",
                             CreatedByTeacherId = 1,
-                            DateTime = new DateTime(2024, 8, 29, 5, 50, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndTime = new DateTime(2024, 8, 4, 17, 30, 0, 0, DateTimeKind.Unspecified),
                             ExamName = "frist term",
-                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2024, 8, 4, 15, 30, 0, 0, DateTimeKind.Unspecified),
                             SubjectId = 1
                         });
                 });
@@ -411,7 +411,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4303),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9127),
                             CreatedBy = "1",
                             UserId = 1
                         });
@@ -448,21 +448,21 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(1797),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7583),
                             CreatedBy = "admin",
                             Name = "Principal"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(1824),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7608),
                             CreatedBy = "admin",
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(1828),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7612),
                             CreatedBy = "admin",
                             Name = "Student"
                         });
@@ -500,7 +500,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(3550),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8791),
                             CreatedBy = "1",
                             UserId = 3
                         });
@@ -602,7 +602,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4759),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9530),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 1,
                             SubjectName = "Math"
@@ -699,7 +699,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4425),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9177),
                             CreatedBy = "1",
                             UserId = 2
                         });
@@ -759,7 +759,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(2653),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8540),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(2000, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "ib",
@@ -772,7 +772,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(2779),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8679),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(1999, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Mko",
@@ -785,7 +785,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(3386),
+                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8725),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(2005, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "jnr",

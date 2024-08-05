@@ -3,26 +3,46 @@
 @{
     ViewData["Title"] = "Take Exam";
     Layout = null;
+    int i = 0;
+    int opt = 0;
+
 }
 
 <div class="container mt-5">
     <h1 class="mb-4">@Model.ExamName</h1>
     <form asp-action="SubmitExam" method="post">
-        <input type="hidden" asp-for="ExamId" />
+        <input type="hidden" asp-for="@Model.ExamId" value="@Model.ExamId" />
+        <input type="hidden" asp-for="@Model.ExamName" value="@Model.ExamName" />
+       
         @foreach (var question in Model.Questions)
         {
+            <input type="hidden" asp-for="@Model.Questions[@i].QuestionId" value="@question.QuestionId" />
+            <input type="hidden" asp-for="@Model.Questions[@i].QuestionText" value="@question.QuestionText" />
+          
             <div class="mb-3">
                 <h4>@question.QuestionText</h4>
                 <div class="form-check">
                     @foreach (var option in question.Options)
                     {
+                        <input type="hidden" asp-for="@Model.Questions[@i].Options[@opt].OptionId" value="@option.OptionId" />
+                        <input type="hidden" asp-for="@Model.Questions[@i].Options[@opt].OptionText" value="@option.OptionText" />
                         <input class="form-check-input" type="radio" name="Questions[@Model.Questions.IndexOf(question)].SelectedOptionId" value="@option.OptionId" />
+                        
+                            opt++;
+                        
+
                         <label class="form-check-label">
                             @option.OptionText
                         </label>
                     }
                 </div>
             </div>
+
+            
+                i++;
+                opt = 0;
+            
+
         }
         <button type="submit" class="btn btn-success">Submit Exam</button>
     </form>

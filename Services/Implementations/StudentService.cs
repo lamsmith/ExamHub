@@ -112,12 +112,7 @@ namespace ExamHub.Services.Implementations
                 CreatedBy = "1",
             };
 
-            var classstudent = new ClassStudent
-            {
-                StudentId = student.Id,
-                Student = student,
-                ClassId = model.ClassId,
-            };       
+          
 
             _studentRepository.AddStudent(student);
             _studentRepository.AssignStudentToClass(student.Id, model.ClassId);

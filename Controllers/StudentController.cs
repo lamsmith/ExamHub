@@ -34,7 +34,8 @@ namespace ExamHub.Controllers
 
             var dashboardViewModel = new StudentDashboardViewModel
             {
-
+                CurrentClassId = student.ClassStudents.OrderByDescending(x => x.DateJoin).First().ClassId,
+                StudentId = student.Id,
                 Name = student.User.FirstName + student.User.LastName,
                 Classes = student.ClassStudents.Select(x => new ClassResponseModel
                 {
@@ -42,10 +43,14 @@ namespace ExamHub.Controllers
                     ClassName = x.Class.ClassName,
                     Exams = x.Class.Exams.Select(x => new ExamResponseModel
                     {
+                        
                         CreatedAt = DateTime.Now,
                         StartTime = x.StartTime,
+                        EndTime = x.EndTime,
                         Subject = x.Subject.SubjectName
+                        
                     }).ToList()
+
                 }
                  ).ToList(),
               //  UpcomingExams = _examService.GetUpcomingExamsByStudent(student.Id),
@@ -62,6 +67,7 @@ namespace ExamHub.Controllers
                     {
                         ExamName = e.ExamName,
                         StartTime = e.StartTime,
+                        EndTime = e.EndTime,
                         Subject = e.Subject
                     });
 
@@ -79,28 +85,35 @@ namespace ExamHub.Controllers
 
         }
 
-         
 
-       public IActionResult TakeExam(int examId)
+
+        public IActionResult TakeExam(int examId)
         {
             var exam = _examService.GetExamById(examId);
 
             if (exam == null)
-             {
-                return NotFound(); 
-             }
+            {
+                return NotFound();
+            }
+
+            var now = DateTime.Now;
+            if (now < exam.StartTime)
+            {
+                TempData["ErrorMessage"] = "You cannot start the exam until the assigned start time.";
+                return RedirectToAction("Exams", new { classId = exam.ClassId });
+            }
 
             var questions = _examService.GetQuestionsByExamId(examId)
-                            .Select(q => new QuestionViewModel
-                            {
-                                QuestionId = q.Id,
-                                QuestionText = q.QuestionText,
-                                Options = q.Options.Select(o => new OptionViewModel
-                                {
-                                    OptionId = o.Id,
-                                    OptionText = o.OptionText
-                                }).ToList()
-                            }).ToList();
+                .Select(q => new QuestionViewModel
+                {
+                    QuestionId = q.Id,
+                    QuestionText = q.QuestionText,
+                    Options = q.Options.Select(o => new OptionViewModel
+                    {
+                        OptionId = o.Id,
+                        OptionText = o.OptionText
+                    }).ToList()
+                }).ToList();
 
             var model = new TakeExamViewModel
             {
@@ -113,26 +126,33 @@ namespace ExamHub.Controllers
         }
 
 
-        [HttpPost]
-       public IActionResult SubmitExam(TakeExamViewModel model)
+
+        public IActionResult SubmitExam(TakeExamViewModel model)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var studentId = int.Parse(userId);
+            var stringuserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = int.Parse(stringuserId);
+            var student = _studentService.GetStudentByUserId(userId);
 
             foreach (var question in model.Questions)
             {
                 var studentAnswer = new StudentAnswer
                 {
-                    StudentId = studentId,
+                    StudentId = student.Id,
                     QuestionId = question.QuestionId,
                     SelectedOptionId = question.SelectedOptionId
                 };
                 _examService.SaveStudentAnswer(studentAnswer);
             }
 
+            var exam = _examService.GetExamById(model.ExamId);
+            if (exam == null)
+            {
+                return NotFound("Exam not found.");
+            }
+
             var studentExam = new StudentExam
             {
-                StudentId = studentId,
+                StudentId = student.Id,
                 ExamId = model.ExamId,
                 Completed = true,
                 CompletionTime = DateTime.Now
@@ -142,27 +162,32 @@ namespace ExamHub.Controllers
             return RedirectToAction("Dashboard");
         }
 
-              public IActionResult Exams()
-                 {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var studentId = int.Parse(userId);
-                var examResponseModels = _examService.GetExamsForStudent(studentId);
 
-                    var exams = examResponseModels.Select(e => new Exam
-                    {
-                        Id = e.Id,
-                        ExamName = e.ExamName,
-                        CreatedAt = DateTime.Now,
-        
-                    }).ToList();
+        public IActionResult Exams(int classId)
+        {
+            // Get exams for the class
+            var examResponseModels = _examService.GetExamsForStudent(classId);
 
-                    var examsViewModel = new ExamsViewModel
-                    {
-                        Exams = exams
-                    };
+            var exams = examResponseModels.Select(e => new ExamViewModel
+            {
+                ExamId = e.Id,
+                Class = e.Class,
+                Subject = e.Subject,
+                StartTime = e.StartTime,
+                EndTime = e.EndTime
+            }).ToList();
 
-                     return View(examsViewModel);
-              }
+            var examsViewModel = new ExamsViewModel
+            {
+                Exams = exams
+            };
+
+            return View(examsViewModel);
+        }
+
+
+
+
 
 
     }

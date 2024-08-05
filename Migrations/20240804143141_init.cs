@@ -231,7 +231,8 @@ namespace ExamHub.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     ClassId = table.Column<int>(type: "int", nullable: false),
-                    StudentId = table.Column<int>(type: "int", nullable: false)
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    DateJoin = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -314,7 +315,6 @@ namespace ExamHub.Migrations
                     ExamName = table.Column<string>(type: "longtext", nullable: false),
                     CreatedByTeacherId = table.Column<int>(type: "int", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
-                    DateTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ClassId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -481,11 +481,11 @@ namespace ExamHub.Migrations
                 columns: new[] { "Id", "ClassName", "CreatedAt", "CreatedBy", "CreatedByPrincipalId", "ModifiedAt", "ModifiedBy" },
                 values: new object[,]
                 {
-                    { 1, "JSS 1", new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4555), "1", 0, null, null },
-                    { 2, "JSS 2", new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4563), "1", 0, null, null },
-                    { 3, "JSS 3", new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4568), "1", 0, null, null },
-                    { 4, "SSS 1", new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4572), "1", 0, null, null },
-                    { 5, "SSS 2", new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4578), "1", 0, null, null }
+                    { 1, "JSS 1", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9232), "1", 0, null, null },
+                    { 2, "JSS 2", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9236), "1", 0, null, null },
+                    { 3, "JSS 3", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9238), "1", 0, null, null },
+                    { 4, "SSS 1", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9240), "1", 0, null, null },
+                    { 5, "SSS 2", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9242), "1", 0, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -493,9 +493,9 @@ namespace ExamHub.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(1797), "admin", null, null, "Principal" },
-                    { 2, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(1824), "admin", null, null, "Teacher" },
-                    { 3, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(1828), "admin", null, null, "Student" }
+                    { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7583), "admin", null, null, "Principal" },
+                    { 2, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7608), "admin", null, null, "Teacher" },
+                    { 3, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7612), "admin", null, null, "Student" }
                 });
 
             migrationBuilder.InsertData(
@@ -503,30 +503,30 @@ namespace ExamHub.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "DateOfBirth", "FirstName", "Gender", "LastName", "ModifiedAt", "ModifiedBy", "Password", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(2653), "1", new DateTime(2000, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "ib", 1, "ibbb", null, null, "admin", 1, "admin" },
-                    { 2, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(2779), "1", new DateTime(1999, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mko", 1, "axc", null, null, "teacher", 2, "teacher" },
-                    { 3, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(3386), "1", new DateTime(2005, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "jnr", 1, "ib", null, null, "student", 3, "student" }
+                    { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8540), "1", new DateTime(2000, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "ib", 1, "ibbb", null, null, "admin", 1, "admin" },
+                    { 2, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8679), "1", new DateTime(1999, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mko", 1, "axc", null, null, "teacher", 2, "teacher" },
+                    { 3, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8725), "1", new DateTime(2005, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "jnr", 1, "ib", null, null, "student", 3, "student" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Principals",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "UserId" },
-                values: new object[] { 1, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4303), "1", null, null, 1 });
+                values: new object[] { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9127), "1", null, null, 1 });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "UserId" },
-                values: new object[] { 1, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(3550), "1", null, null, 3 });
+                values: new object[] { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8791), "1", null, null, 3 });
 
             migrationBuilder.InsertData(
                 table: "Teachers",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "UserId" },
-                values: new object[] { 1, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4425), "1", null, null, 2 });
+                values: new object[] { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9177), "1", null, null, 2 });
 
             migrationBuilder.InsertData(
                 table: "ClassStudents",
-                columns: new[] { "Id", "ClassId", "StudentId" },
-                values: new object[] { 1, 1, 1 });
+                columns: new[] { "Id", "ClassId", "DateJoin", "StudentId" },
+                values: new object[] { 1, 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 });
 
             migrationBuilder.InsertData(
                 table: "ClassTeachers",
@@ -536,7 +536,7 @@ namespace ExamHub.Migrations
             migrationBuilder.InsertData(
                 table: "Subjects",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "CreatedByPrincipalId", "ModifiedAt", "ModifiedBy", "SubjectName" },
-                values: new object[] { 1, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4759), "1", 1, null, null, "Math" });
+                values: new object[] { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9530), "1", 1, null, null, "Math" });
 
             migrationBuilder.InsertData(
                 table: "ClassSubjects",
@@ -545,8 +545,8 @@ namespace ExamHub.Migrations
 
             migrationBuilder.InsertData(
                 table: "Exams",
-                columns: new[] { "Id", "ClassId", "CreatedAt", "CreatedBy", "CreatedByTeacherId", "DateTime", "EndTime", "ExamName", "ModifiedAt", "ModifiedBy", "StartTime", "SubjectId" },
-                values: new object[] { 1, 1, new DateTime(2024, 7, 28, 0, 51, 56, 661, DateTimeKind.Local).AddTicks(4891), "1", 1, new DateTime(2024, 8, 29, 5, 50, 0, 0, DateTimeKind.Unspecified), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "frist term", null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 1 });
+                columns: new[] { "Id", "ClassId", "CreatedAt", "CreatedBy", "CreatedByTeacherId", "EndTime", "ExamName", "ModifiedAt", "ModifiedBy", "StartTime", "SubjectId" },
+                values: new object[] { 1, 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9659), "1", 1, new DateTime(2024, 8, 4, 17, 30, 0, 0, DateTimeKind.Unspecified), "frist term", null, null, new DateTime(2024, 8, 4, 15, 30, 0, 0, DateTimeKind.Unspecified), 1 });
 
             migrationBuilder.InsertData(
                 table: "SubjectStudents",
