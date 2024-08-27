@@ -12,10 +12,13 @@ namespace ExamHub.Services.Implementations
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
+        private readonly ApplicationDbContext _context;
 
-        public StudentService(IStudentRepository studentRepository)
+
+        public StudentService(IStudentRepository studentRepository, ApplicationDbContext context)
         {
             _studentRepository = studentRepository;
+            _context = context;
         }
 
         public IEnumerable<StudentResponseModel> GetAllStudent()
@@ -127,6 +130,16 @@ namespace ExamHub.Services.Implementations
         {
            return  _studentRepository.GetStudentByUserId(userId);
         }
+
+        public IEnumerable<int> GetStudentAnswersForExam(int studentId, int examId)
+        {
+            return _context.StudentAnswers
+                .Where(sa => sa.StudentId == studentId && sa.ExamQuestion.ExamId == examId)
+                 .Include(sa => sa.ExamQuestion) // Include the question if needed
+                .Select(sa => sa.SelectedOptionId)
+                .ToList();
+        }
+
     }
 }
 

@@ -9,11 +9,10 @@ namespace ExamHub.Entity
         public int ExamId { get; set; }
         public Exam Exam { get; set; }
         public int QuestionNo { get; set; }
-
         public string QuestionText { get; set; }
         public ICollection<Option> Options { get; set; } =  new List<Option>();
-
-        public string CorrectAnswer { get; set; }
+        public int CorrectAnswer { get; set; }
+        public ICollection<StudentAnswer> StudentAnswers { get; set; } = new List<StudentAnswer>();
         //public string PickedAnswer { get; set; }
     }
 }

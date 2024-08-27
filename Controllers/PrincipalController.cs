@@ -115,22 +115,19 @@ namespace ExamHub.Controllers
             return View(model);
         }
 
-        public IActionResult CreateSubject()
-        {
-            return View(new CreateSubjectViewModel());
-        }
+      
 
-        [HttpPost]
-        public IActionResult CreateSubject(CreateSubjectViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                _subjectService.CreateSubject(model.Name);
-                return RedirectToAction("Index");
-            }
+        //[HttpPost]
+        //public IActionResult CreateSubject(CreateSubjectViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _subjectService.CreateSubject(model.Name);
+        //        return RedirectToAction("Index");
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         public IActionResult AssignSubject()
         {
@@ -239,10 +236,202 @@ namespace ExamHub.Controllers
             return View("Settings");
         }
 
-        public IActionResult Logout()
+
+        [HttpGet]
+        public IActionResult ManageClasses()
         {
-            
-            return RedirectToAction("Index", "Home");
+            var classes = _classService.GetAllClasses();
+            return View(classes);
+        }
+
+        [HttpGet]
+        public IActionResult ManageSubjects()
+        {
+            var subjects = _subjectService.GetAllSubjects();
+            return View(subjects);
+        }
+
+        [HttpGet]
+        public IActionResult CreateClass()
+        {
+            return View(new CreateClassRequestModel());
+        }
+
+        [HttpPost]
+        public IActionResult CreateClass(CreateClassRequestModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var stringuserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var principalId = int.Parse(stringuserId);
+              
+                var newClass = new Class
+                {
+                    ClassName = model.ClassName,
+                    CreatedByPrincipalId = principalId,
+                    CreatedAt = DateTime.Now,
+                    CreatedBy = stringuserId
+
+                };
+                _classService.CreateClass(newClass);
+                return RedirectToAction("ManageClasses");
+
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EditClass(int id)
+        {
+            var classEntity = _classService.GetClassById(id);
+            return View(classEntity);
+        }
+
+        [HttpPost]
+        public IActionResult EditClass(Class updatedClass)
+        {
+            if (ModelState.IsValid)
+            {
+                _classService.UpdateClass(updatedClass);
+                return RedirectToAction("ManageClasses");
+            }
+            return View(updatedClass);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteClass(int id)
+        {
+            _classService.DeleteClass(id);
+            return RedirectToAction("ManageClasses");
+        }
+
+        [HttpGet]
+        public IActionResult CreateSubject()
+        {
+            return View(new CreateSubjectRequestModel());
+        }
+
+
+        [HttpPost]
+        public IActionResult CreateSubject(CreateSubjectRequestModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var stringuserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                var principalId = int.Parse(stringuserId);
+
+                var subject = new Subject
+                {
+                    SubjectName = model.SubjectName,
+                    CreatedBy = stringuserId,
+                    PrincipalId = principalId,
+                    CreatedAt = DateTime.Now,
+                    
+                };
+
+                _subjectService.CreateSubject(subject);
+                return RedirectToAction("ManageSubjects");
+            }
+            return View(model);
+        }
+
+            [HttpGet]
+            public IActionResult EditSubject(int id)
+            {
+                var subject = _subjectService.GetAllSubjects().FirstOrDefault(s => s.Id == id);
+                return View(subject);
+            }
+
+            [HttpPost]
+            public IActionResult EditSubject(Subject subject)
+            {
+                if (ModelState.IsValid)
+                {
+                    _subjectService.CreateSubject(subject);
+                    return RedirectToAction("ManageSubjects");
+                }
+                return View(subject);
+            }
+
+
+        [HttpPost]
+        public IActionResult DeleteSubject(int id)
+        {
+            _subjectService.DeleteSubject(id);
+            return RedirectToAction("ManageSubjects");
+        }
+
+
+        public IActionResult EditTeacher(int id)
+        {
+            var teacher = _teacherService.GetTeacherById(id);
+            if (teacher == null)
+            {
+                return NotFound();
+            }
+
+            // Retrieve and map Class entities to ClassResponseModel DTOs
+            var allClassDtos = _classService.GetAllClasses().Select(c => new ClassResponseModel
+            {
+                Id = c.Id,
+                ClassName = c.ClassName
+            }).ToList();
+
+            // Retrieve and map Subject entities to SubjectResponseModel DTOs
+            var allSubjectDtos = _subjectService.GetAllSubjects().Select(s => new SubjectResponseModel
+            {
+                Id = s.Id,
+                SubjectName = s.SubjectName
+            }).ToList();
+
+            var model = new EditTeacherViewModel
+            {
+                Id = teacher.Id,
+                FirstName = teacher.User.FirstName,
+                LastName = teacher.User.LastName,
+                AssignedClassIds = teacher.ClassTeachers.Select(ct => ct.ClassId).ToList(),
+                AssignedSubjectIds = teacher.SubjectTeachers.Select(st => st.SubjectId).ToList(),
+                AllClasses = allClassDtos, // Assign mapped ClassResponseModel DTOs
+                AllSubjects = allSubjectDtos // Assign mapped SubjectResponseModel DTOs
+            };
+
+            return View(model);
+        }
+
+
+
+        [HttpPost]
+        public IActionResult EditTeacher(EditTeacherViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var teacher = _teacherService.GetTeacherById(model.Id);
+                if (teacher == null)
+                {
+                    return NotFound();
+                }
+
+                teacher.User.FirstName = model.FirstName;
+                teacher.User.LastName = model.LastName;
+                // Remove current assignments
+                _teacherService.RemoveTeacherFromClass(teacher.Id, model.RemovedClassId);
+                _teacherService.RemoveTeacherFromSubject(teacher.Id, model.RemovedSubjectId);
+                // Add new assignments
+                _teacherService.AssignTeacherToClassAndSubject(teacher.Id, model.NewClassId, model.NewSubjectId);
+
+                _teacherService.UpdateTeacher(teacher);
+                return RedirectToAction("ViewTeachers");
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteTeacher(int id)
+        {
+            _teacherService.DeleteTeacher(id);
+            return RedirectToAction("ViewTeachers");
         }
 
     }

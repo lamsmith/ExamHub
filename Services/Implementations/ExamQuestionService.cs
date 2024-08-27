@@ -1,7 +1,9 @@
-﻿using ExamHub.DTO;
+﻿using ExamHub.Context;
+using ExamHub.DTO;
 using ExamHub.Entity;
 using ExamHub.Repositories.Interface;
 using ExamHub.Services.Inteface;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamHub.Services.Implementations
 {
@@ -9,10 +11,12 @@ namespace ExamHub.Services.Implementations
         public class ExamQuestionService : IExamQuestionService
         {
             private readonly IExamQuestionRepository _repository;
+            private readonly ApplicationDbContext _context;
 
-            public ExamQuestionService(IExamQuestionRepository repository)
+            public ExamQuestionService(IExamQuestionRepository repository, ApplicationDbContext context)
             {
                 _repository = repository;
+                _context = context;
             }
 
             public IEnumerable<ExamQuestionReponseModel> GetAllExamQuestions()
@@ -27,21 +31,26 @@ namespace ExamHub.Services.Implementations
                     }).ToList(),
                 });
             }
-
             public ExamQuestionReponseModel GetExamQuestionById(int id)
             {
-                var getExamQuestionId = _repository.GetExamQuestionById(id);
-                return  new ExamQuestionReponseModel
+                var getExamQuestionId = _context.ExamQuestions
+                    .Include(eq => eq.Options)
+                    .FirstOrDefault(eq => eq.Id == id);
+                if (getExamQuestionId == null)
                 {
-                     QuestionText   = getExamQuestionId.QuestionText,
-                      Options   = getExamQuestionId.Options.Select(o =>new OptionResponseModel
-                      {
-                          OptionText = o.OptionText,
-                      }).ToList(),
+                    throw new KeyNotFoundException("Exam question not found.");
+                }
+                return new ExamQuestionReponseModel
+                {
+                    QuestionText = getExamQuestionId.QuestionText,
+                    Options = getExamQuestionId.Options?.Select(o => new OptionResponseModel
+                    {
+                        OptionText = o.OptionText,
+                    }).ToList(),
                 };
             }
 
-            public void AddExamQuestion(ExamQuestion examQuestion)
+        public void AddExamQuestion(ExamQuestion examQuestion)
             {
                 _repository.AddExamQuestion(examQuestion);
             }
@@ -56,38 +65,64 @@ namespace ExamHub.Services.Implementations
                 _repository.DeleteExamQuestion(id);
             }
 
+            public IEnumerable<int> GetCorrectAnswersForExam(int examId)
+            {
+            
+                var correctAnswers = _context.ExamQuestions
+                    .Where(q => q.ExamId == examId)
+                    .Select(q => q.CorrectAnswer)
+                    .ToList();
+
+
+                return correctAnswers;
+            }
+
+
+
 
 
         public CreateExamQuestionResponseModel CreateExamQuestion(CreateExamQuestionRequestModel request)
         {
-            var questionId = new Random().Next(1, 1000);
-
+            // Create options and assign labels (A, B, C, etc.)
             var options = request.Options.Select((optionText, index) => new Option
             {
                 OptionText = optionText,
-                OptionLabel = ((char)('A' + index)).ToString() 
+                OptionLabel = ((char)('A' + index)).ToString()
             }).ToList();
 
+
+            // Create the exam question with the correct option ID
             var examQuestion = new ExamQuestion
             {
-                QuestionNo = questionId,
+                QuestionNo = request.QuestionNo,
                 QuestionText = request.QuestionText,
                 Options = options,
-                CorrectAnswer = request.CorrectAnswer,
                 ExamId = request.ExamId
             };
 
+          
             _repository.AddExamQuestion(examQuestion);
 
+
+        
+            var correctOption = examQuestion.Options.FirstOrDefault(o => o.OptionLabel == request.CorrectAnswer);
+
+            examQuestion.CorrectAnswer = correctOption.Id;
+
+            _repository.UpdateExamQuestion(examQuestion);
+
+            
             return new CreateExamQuestionResponseModel
             {
-                QuestionId = questionId,
-                QuestionText = request.QuestionText,
+                QuestionId = examQuestion.QuestionNo,
+                QuestionText = examQuestion.QuestionText,
                 Options = request.Options,
-                CorrectAnswer = request.CorrectAnswer
+                CorrectAnswer = request.CorrectAnswer 
             };
         }
+
+    
     }
-    }
+}
     
 

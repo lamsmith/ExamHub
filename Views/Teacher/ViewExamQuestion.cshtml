@@ -1,0 +1,17 @@
+﻿@model ExamHub.ViewModel.ExamQuestionsViewModel
+
+@{
+    Layout = null;
+}
+
+<h2>Question @Model.QuestionNo</h2>
+<p>@Model.QuestionText</p>
+
+<ul>
+    @foreach (var option in Model.Options)
+    {
+        <li>@option.OptionText</li>
+    }
+</ul>
+
+<p>Correct Answer: @Model.CorrectAnswer</p>

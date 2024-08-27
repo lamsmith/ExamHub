@@ -41,6 +41,11 @@ namespace ExamHub
             builder.Services.AddScoped<IClassTeacherRepository, ClassTeacherRepository>();
             builder.Services.AddScoped<ISubjectTeacherService, SubjectTeacherService>();
             builder.Services.AddScoped<IClassTeacherService, ClassTeacherService>();
+            builder.Services.AddScoped<IExamResultRepository, ExamResultRepository>();
+            builder.Services.AddScoped<IGeneralExamResultRepository, GeneralExamResultRepository>();
+            builder.Services.AddScoped<IExamResultService, ExamResultService>();
+            builder.Services.AddScoped<IGeneralExamResultService, GeneralExamResultService>();
+            builder.Services.AddScoped<IListAnswerReposity, ListAnswerReposity>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 

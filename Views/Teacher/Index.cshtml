@@ -19,8 +19,15 @@
             <ul>
                 <li><a asp-action="Dashboard" asp-controller="Teacher">Home</a></li>
                 <li><a asp-action="SetExam" asp-controller="Teacher">Set Exam</a></li>
-                <li><a asp-action="ViewClass" asp-controller="Teacher">View Class</a></li>
+
+                <li>
+                    <a asp-action="ViewStudents" asp-route-classId="@Model.CurrentClassId">View Students</a>
+
+
+                </li>
+               
                 <li><a asp-action="ViewExamScores" asp-controller="Teacher">View Exam Scores</a></li>
+                <li><a asp-action="ViewExamQuestion" asp-controller="Teacher"> View ExamQuestions</a> </li>
                 <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
             </ul>
         </div>

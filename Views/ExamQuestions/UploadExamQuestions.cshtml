@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Upload Exam Questions";
-
     int examId = ViewBag.ExamId ?? 0;
     Layout = null;
 }
@@ -37,10 +36,38 @@
                     <input type="hidden" name="examId" value="@examId" />
                     <div class="form-group">
                         <label for="file">Upload Excel File</label>
-                        <input type="file" name="file" class="form-control" />
+                        <input type="file" name="file" class="form-control" required />
+                        <small class="form-text text-muted">
+                            Please ensure that your Excel file meets the following requirements:
+                            <ul>
+                                <li>Each question must have a unique question number.</li>
+                                <li>Each question must have exactly four options.</li>
+                                <li>The correct answer must be provided and match one of the four options.</li>
+                                <li>The Excel file must include a header row with the columns: Question No, Question Text, Option 1, Option 2, Option 3, Option 4, Correct Answer.</li>
+                            </ul>
+                        </small>
                     </div>
                     <button type="submit" class="btn btn-primary">Upload and Preview</button>
                 </form>
+
+                @if (ViewBag.Errors != null && ViewBag.Errors.Count > 0)
+                {
+                    <div class="alert alert-danger">
+                        <h4>Errors in Excel File:</h4>
+                        <ul>
+                            @foreach (var error in ViewBag.Errors)
+                            {
+                                <li>@error</li>
+                            }
+                        </ul>
+                    </div>
+                }
+                else if (ViewBag.SuccessMessage != null)
+                {
+                    <div class="alert alert-success">
+                        @ViewBag.SuccessMessage
+                    </div>
+                }
 
                 @if (ViewBag.ExcelData != null)
                 {

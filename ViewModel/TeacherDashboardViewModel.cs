@@ -11,6 +11,7 @@ namespace ExamHub.ViewModel
         public IEnumerable<ClassResponseModel> Classes { get; set; }
         public List<SubjectResponseModel> Subjects { get; set; }
         public int TeacherId { get; set; }
+        public int CurrentClassId { get; set; }
     }
 }
 

@@ -28,8 +28,12 @@ namespace ExamHub.Repositories.Implementations
 
         public void CreateClass(Class newClass)
         {
-            newClass.Id = _context.Classes.Max(c => c.Id) + 1;
+            if (newClass.CreatedByPrincipalId == 0)
+            {
+                throw new Exception("CreatedByPrincipalId is not set.");
+            }
             _context.Classes.Add(newClass);
+            _context.SaveChanges();  
         }
 
         public void UpdateClass(Class updatedClass)
@@ -39,6 +43,7 @@ namespace ExamHub.Repositories.Implementations
             {
                 existingClass.ClassName = updatedClass.ClassName;
                 existingClass.ClassStudents = updatedClass.ClassStudents;
+                _context.SaveChanges(); 
             }
         }
 
@@ -48,10 +53,12 @@ namespace ExamHub.Repositories.Implementations
             if (classToDelete != null)
             {
                 _context.Classes.Remove(classToDelete);
+                _context.SaveChanges();  
             }
         }
 
-          public IEnumerable<Class> GetAllClassTeachers(int teacherId)
+
+        public IEnumerable<Class> GetAllClassTeachers(int teacherId)
         {
            return _context.Classes.Where(cl => cl.ClassTeachers.Any(ct => ct.Teacher.Id == teacherId));
         }

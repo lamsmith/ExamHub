@@ -35,10 +35,11 @@ namespace ExamHub.Controllers
             return Ok(_service.GetAllExamQuestions());
         }
 
-        [HttpGet("{id}")]
+        //[HttpGet("{id}")]
         public ActionResult<ExamQuestion> GetExamQuestionById(int id)
         {
             var examQuestion = _service.GetExamQuestionById(id);
+           // var examQuestion = "";
             if (examQuestion == null)
             {
                 return NotFound();
@@ -106,21 +107,29 @@ namespace ExamHub.Controllers
             return View();
         }
 
+        
+
         public IActionResult UploadExamQuestions(IFormFile file, int examId)
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-            
-
-            if (file != null && file.Length > 0)
+            if (file == null || file.Length == 0)
             {
-                var uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+                ModelState.AddModelError("", "No file uploaded or file is empty.");
+                return View();
+            }
+
+            var errors = new List<string>();
+            var uploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+
+            try
+            {
                 if (!Directory.Exists(uploadDirectory))
                 {
                     Directory.CreateDirectory(uploadDirectory);
                 }
 
-                var filePath = Path.Combine(uploadDirectory, file.FileName);
+                var filePath = Path.Combine(uploadDirectory, Path.GetFileName(file.FileName));
 
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -133,111 +142,93 @@ namespace ExamHub.Controllers
                 {
                     using (var reader = ExcelReaderFactory.CreateReader(stream))
                     {
-                        bool isHeaderSkipped = false;
+                        int rowIndex = 0;
 
                         while (reader.Read())
                         {
-                            if (!isHeaderSkipped)
+                            rowIndex++;
+
+                            // Skip the header row
+                            if (rowIndex == 1) continue;
+
+                            // Skip rows that are completely empty
+                            if (reader.FieldCount == 0 || reader.IsDBNull(0))
                             {
-                                isHeaderSkipped = true;
                                 continue;
                             }
 
-                            var requestModel = new CreateExamQuestionRequestModel
+                            // Try to parse the question number
+                            if (!int.TryParse(reader.GetValue(0)?.ToString(), out int questionNo) || questionNo <= 0)
                             {
-                                QuestionNo = Convert.ToInt32(reader.GetValue(0)),
-                                QuestionText = reader.GetValue(1)?.ToString(),
-                                Options = new List<string>
+                                errors.Add($"Invalid question number at row {rowIndex}.");
+                                continue;
+                            }
+
+                            var questionText = reader.GetValue(1)?.ToString();
+                            if (string.IsNullOrWhiteSpace(questionText))
+                            {
+                                errors.Add($"Question {questionNo}: Question text is missing or invalid at row {rowIndex}.");
+                                continue;
+                            }
+
+                            var options = new List<string>
                             {
                                 reader.GetValue(2)?.ToString(),
                                 reader.GetValue(3)?.ToString(),
                                 reader.GetValue(4)?.ToString(),
                                 reader.GetValue(5)?.ToString()
-                            },
-                                CorrectAnswer = reader.GetValue(6)?.ToString(),
+                            };
+
+                            if (options.Any(opt => string.IsNullOrWhiteSpace(opt)))
+                            {
+                                errors.Add($"Question {questionNo}: One or more options are missing at row {rowIndex}.");
+                                continue;
+                            }
+
+                            var correctAnswer = reader.GetValue(6)?.ToString();
+                            
+                            var requestModel = new CreateExamQuestionRequestModel
+                            {
+                                QuestionNo = questionNo,
+                                QuestionText = questionText,
+                                Options = options,
+                                CorrectAnswer = correctAnswer,  
                                 ExamId = examId
                             };
 
-                            var responseModel = _service.CreateExamQuestion(requestModel);
                             excelData.Add(requestModel);
-
                         }
-
-                        ViewBag.ExcelData = excelData;
                     }
                 }
+
+                if (errors.Any())
+                {
+                    ViewBag.Errors = errors;
+                    return View();
+                }
+
+                
+                foreach (var request in excelData)
+                {
+                    _service.CreateExamQuestion(request);
+                }
+
+                ViewBag.SuccessMessage = "Questions uploaded successfully!";
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "An error occurred while processing the file. Please try again.");
+                // Optionally log the exception here
+                return View();
             }
 
             return View();
         }
 
-        [HttpPost]
-        public IActionResult SaveExamQuestions(List<DTO.UploadedQuestion> uploadedQuestions)
-        {
-            try
-            {
-                foreach (var question in uploadedQuestions)
-                {
-                    var examQuestion = new ExamQuestion
-                    {
-                        QuestionNo = question.QuestionNo,
-                        QuestionText = question.QuestionText,
-                        Options = new List<Option>
-                {
-                    new Option { OptionText = question.OptionA },
-                    new Option { OptionText = question.OptionB },
-                    new Option { OptionText = question.OptionC },
-                    new Option { OptionText = question.OptionD }
-                },
-                        CorrectAnswer = question.CorrectAnswer
-                    };
 
-            
-                    _context.ExamQuestions.Add(examQuestion);
-                }
 
-              
-                _context.SaveChanges();
 
-              
-                return RedirectToAction("UploadExamQuestions"); 
-            }
-            catch (Exception ex)
-            {
-              
-                ViewBag.ErrorMessage = "An error occurred while saving the data. Please try again later.";
-                return View("Error"); 
-            }
-        }
 
-        //[HttpPost]
-        //public IActionResult SaveExamQuestions(List<UploadedQuestion> uploadedQuestions)
-        //{
-        //    foreach (var question in uploadedQuestions)
-        //    {
-        //        var examQuestion = new ExamQuestion
-        //        {
-        //            QuestionText = question.QuestionText,
-        //            Options = new List<Option>
-        //    {
-        //        new Option { OptionText = question.OptionA },
-        //        new Option { OptionText = question.OptionB },
-        //        new Option { OptionText = question.OptionC },
-        //        new Option { OptionText = question.OptionD }
-        //    },
-        //            CorrectAnswer = question.CorrectAnswer
-        //        };
-
-        //        // Assuming _context is properly initialized elsewhere in your code
-        //        _context.ExamQuestions.Add(examQuestion);
-        //    }
-
-        //    // Save changes to the database
-        //    _context.SaveChanges();
-
-        //    // Redirect to the "UploadExamQuestions" action
-        //    return RedirectToAction("UploadExamQuestions");
-        //}
 
     }
 }

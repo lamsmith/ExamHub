@@ -1,5 +1,6 @@
 ﻿using ExamHub.DTO;
 using ExamHub.Entity;
+using ExamHub.ViewModel;
 
 namespace ExamHub.Services.Inteface
 {
@@ -8,19 +9,33 @@ namespace ExamHub.Services.Inteface
         void AddExam(Exam exam);
         IEnumerable<ExamResponseModel> GetAllExams();
         IEnumerable<ExamResponseModel> GetExamsByTeacherId(int teacherId);
-        //IEnumerable<ExamResponseModel> GetExamsByTeacher(string teacherName);
         IEnumerable<StudentExam> GetExamScoresByExamId(int examId);
-        IEnumerable<ExamQuestionReponseModel> GetQuestionsByExamId(int examId);
         void SaveStudentAnswer(StudentAnswer studentAnswer);
         void SaveStudentExam(StudentExam studentExam);
-        IEnumerable<ExamResponseModel> GetExamsForStudent(int classId);
+        IEnumerable<ExamResponseModel> GetExamsForStudent(int classId,  int studentId);
         IEnumerable<ExamResponseModel> GetUpcomingExamsByClass(int classId);
+        bool HasStudentTakenExam(int studentId, int examId);
         Exam GetExamById(int id);
         void UpdateExam(Exam exam);
         void DeleteExam(int id);
         int CreateExam(ExamRequestModel exam);
+        public double CalculateScore(int studentId, int examId);
+        public void SaveExamResult(ExamResult examResult);
+        List<ExamQuestion> GetExamQuestionsForExam(int examId);
+
+        IEnumerable<ExamQuestionReponseModel> GetQuestionsByExamId(int examId);
+        ExamQuestion GetExamQuestionById(int id);
+        void UpdateExamQuestion(ExamQuestion examQuestion);
+        void DeleteExamQuestion(int id);
+       
+
+        public StudentResponseModel SaveExam(TakeExamViewModel takeExamViewModel);
 
        
+      
+
+
+
 
 
 

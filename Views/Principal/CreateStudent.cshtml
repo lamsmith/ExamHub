@@ -5,7 +5,7 @@
     Layout = null;
 }
 
-<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+<link rel="stylesheet" href="~/css/CreateTeacher.css">
 
 <div class="dashboard-container">
     <div class="sidebar">
@@ -14,8 +14,10 @@
             <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
             <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
             <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="ManageClasses" asp-controller="Principal">Classes</a></li>
+            <li><a asp-action="ManageSubjects" asp-controller="Principal">Subjects</a></li>
             <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
-            <li><a asp-action="Logout" asp-controller="Principal">Logout</a></li>
+            <li><a asp-action="Logout" asp-controller="Account">Logout</a></li> 
         </ul>
     </div>
 
@@ -24,29 +26,29 @@
 <h2>Create Student</h2>
 
 <form asp-action="CreateStudent">
-    <div class="form-group">
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName" class="form-control" />
-        <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" id="FirstName" class="form-control" oninput="updateUserNameAndPassword()" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" id="LastName" class="form-control" oninput="updateUserNameAndPassword()" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserName"></label>
+            <input asp-for="UserName" id="UserName" class="form-control" readonly />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" id="Password" class="form-control" readonly />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
     <div class="form-group">
         <label asp-for="DateOfBirth"></label>
-        <input asp-for="DateOfBirth" class="form-control" />
+            <input asp-for="DateOfBirth" type="date" class="form-control" />
         <span asp-validation-for="DateOfBirth" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -69,3 +71,13 @@
     </div>
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
+
+    <script>
+        function updateUserNameAndPassword() {
+            var firstName = document.getElementById("FirstName").value;
+            var lastName = document.getElementById("LastName").value;
+
+            document.getElementById("UserName").value = firstName;
+            document.getElementById("Password").value = lastName;
+        }
+    </script>

@@ -70,6 +70,51 @@ namespace ExamHub.Repositories.Implementations
             return _context.Teachers.Include(t => t.User).FirstOrDefault(t => t.UserId == userId);
         }
 
+        public void UpdateTeacher(Teacher teacher)
+        {
+            _context.Teachers.Update(teacher);
+            _context.SaveChanges();
+        }
+
+        public void RemoveTeacherFromClass(int teacherId, int classId)
+        {
+            var classTeacher = _context.ClassTeachers.FirstOrDefault(ct => ct.TeacherId == teacherId && ct.ClassId == classId);
+            if (classTeacher != null)
+            {
+                _context.ClassTeachers.Remove(classTeacher);
+                _context.SaveChanges();
+            }
+        }
+
+        public void RemoveTeacherFromSubject(int teacherId, int subjectId)
+        {
+            var subjectTeacher = _context.SubjectTeachers.FirstOrDefault(st => st.TeacherId == teacherId && st.SubjectId == subjectId);
+            if (subjectTeacher != null)
+            {
+                _context.SubjectTeachers.Remove(subjectTeacher);
+                _context.SaveChanges();
+            }
+        }
+
+        public void DeleteTeacher(int teacherId)
+        {
+            var teacher = _context.Teachers.Include(t => t.User).FirstOrDefault(t => t.Id == teacherId);
+            if (teacher != null)
+            {
+                _context.Users.Remove(teacher.User); // Assuming cascading deletes handle related entities
+                _context.Teachers.Remove(teacher);
+                _context.SaveChanges();
+            }
+        }
+
+        public Teacher GetTeacherById(int id)
+        {
+            return _context.Teachers.Include(t => t.User)
+                                    .Include(t => t.ClassTeachers).ThenInclude(ct => ct.Class)
+                                    .Include(t => t.SubjectTeachers).ThenInclude(st => st.Subject)
+                                    .FirstOrDefault(t => t.Id == id);
+        }
+
 
     }
 }

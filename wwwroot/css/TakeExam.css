@@ -1,58 +1,80 @@
-﻿/* Sidebar */
-.sidebar {
-    background-color: #4B0082;
-    color: white;
+﻿/* Countdown Timer Styles */
+.clock-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
 
-    .sidebar .nav-link {
-        color: white;
-    }
-
-        .sidebar .nav-link:hover {
-            background-color: #6A0DAD;
-        }
-
-    .sidebar .sidebar-link {
-        color: white;
-        text-decoration: none;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        padding: 10px 20px;
-        border-radius: 5px;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-        .sidebar .sidebar-link i {
-            margin-right: 10px;
-        }
-
-/* Main Content */
-.question {
-    margin-bottom: 20px;
+.clock {
+    border: 5px solid #4CAF50;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Question Navigation Panel */
-.question-nav {
-    background-color: #f8f9fa;
-    height: 100%;
-    padding: 20px;
+.clock-face {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-    .question-nav .nav-item {
-        margin-bottom: 10px;
-    }
+.hand {
+    position: absolute;
+    width: 40%;
+    height: 2%;
+    background-color: #333;
+    transform-origin: 100%;
+    transform: rotate(90deg);
+    transition: transform 0.5s ease-in-out;
+}
 
-    .question-nav .nav-link {
-        font-weight: bold;
-        color: #4B0082;
-    }
+.second-hand {
+    background-color: red;
+    width: 45%;
+}
 
-        .question-nav .nav-link:hover {
-            color: #6A0DAD;
-            text-decoration: underline;
-        }
+.hour-hand {
+    width: 30%;
+}
 
-        .question-nav .nav-link.faded {
-            opacity: 0.5;
-        }
+.minute-hand {
+    width: 35%;
+}
+
+.center-point {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #333;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.time-remaining {
+    position: absolute;
+    top: 110%;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Utility classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}

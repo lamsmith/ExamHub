@@ -11,7 +11,7 @@ namespace ExamHub.Repositories.Interface
         void AddExamQuestion(ExamQuestion examQuestion);
         void UpdateExamQuestion(ExamQuestion examQuestion);
         void DeleteExamQuestion(int id);
-
-
+        public IEnumerable<int> GetCorrectAnswersForExam(int examId);
+        IEnumerable<ExamQuestion> GetQuestionsForExam(int examId);
     }
 }

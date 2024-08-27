@@ -10,17 +10,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Username</th>
+            <th>Full Name</th>
+            <th>Class</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var student in Model.Students)
         {
             <tr>
-                <td>@student.StudentId</td>
-                <td>@student.StudentName</td>
-               
+                <td>@student.FullName</td>
+                <td>@student.ClassName</td>
             </tr>
         }
     </tbody>

@@ -3,6 +3,9 @@ using ExamHub.Entity;
 using ExamHub.Repositories.Implementations;
 using ExamHub.Repositories.Interface;
 using ExamHub.Services.Inteface;
+using ExamHub.ViewModel;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Security.Claims;
 
 namespace ExamHub.Services.Implementations
@@ -12,12 +15,24 @@ namespace ExamHub.Services.Implementations
         private readonly IExamRepository _examRepository;
         private readonly ITeacherRepository _teacherRepository;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly IExamResultRepository _examResultRepository;
+        private readonly IExamQuestionRepository _examQuestionRepository;
+        private readonly IStudentRepository _studentRepository; 
+        private readonly IExamQuestionService _examQuestionService;
+        private readonly IStudentService _studentService;
+        private readonly IListAnswerReposity _listAnswerReposity;
+        
 
-        public ExamService(IExamRepository examRepository, ITeacherRepository teacherRepository, IHttpContextAccessor httpContext)
+        public ExamService(IExamRepository examRepository, ITeacherRepository teacherRepository, IHttpContextAccessor httpContext, IExamResultRepository examResultRepository, IExamQuestionService examQuestionService, IStudentService studentService, IStudentRepository studentRepository, IListAnswerReposity listAnswerReposity)
         {
             _examRepository = examRepository;
             _teacherRepository = teacherRepository;
             _httpContext = httpContext;
+            _examResultRepository = examResultRepository;
+            _examQuestionService = examQuestionService;
+            _studentService = studentService;
+            _studentRepository = studentRepository;
+            _listAnswerReposity = listAnswerReposity;
         }
 
         public void AddExam(Exam exam)
@@ -51,7 +66,7 @@ namespace ExamHub.Services.Implementations
                   
             });
         }
-        public IEnumerable<ExamResponseModel> GetExamsForStudent(int classId)
+        public IEnumerable<ExamResponseModel> GetExamsForStudent(int classId, int studentId)
         {
             var exams = _examRepository.GetExamsForStudent(classId);
             return exams.Select(e => new ExamResponseModel
@@ -64,10 +79,16 @@ namespace ExamHub.Services.Implementations
                 EndTime = e.EndTime,
                 ClassId = e.ClassId,
                 SubjectId = e.SubjectId,
-                Subject = e.Subject.SubjectName 
+                Subject = e.Subject.SubjectName,
+                 HasTaken = _examResultRepository.HasStudentTakenExam(studentId, e.Id)
+
             });
         }
 
+          public bool HasStudentTakenExam(int studentId, int examId)
+        {
+            return _examResultRepository.HasStudentTakenExam(studentId, examId);
+        }
 
 
         public IEnumerable<ExamResponseModel> GetUpcomingExamsByClass(int classId)
@@ -88,7 +109,9 @@ namespace ExamHub.Services.Implementations
             var getQuestionsByExamId = _examRepository.GetQuestionsByExamId(examId);
             return getQuestionsByExamId.Select(e => new ExamQuestionReponseModel
             {
+                Id =e.Id,
                 QuestionText = e.QuestionText,
+                
                 Options = e.Options.Select(o => new OptionResponseModel
                 {
                     Id = o.Id,
@@ -96,6 +119,8 @@ namespace ExamHub.Services.Implementations
                 }).ToList()
             }).ToList();
         }
+
+      
 
         public Exam GetExamById(int id)
         {
@@ -137,19 +162,20 @@ namespace ExamHub.Services.Implementations
             return exams.Id;
         }
 
-        //public IEnumerable<ExamResponseModel> GetExamsByTeacher(string teacherName)
-        //{
-        //    throw new NotImplementedException();
-        //}
+     
         public IEnumerable<StudentExam> GetExamScoresByExamId(int examId)
         {
             return _examRepository.GetExamScoresByExamId(examId);
         }
 
-        //public IEnumerable<ExamQuestion> GetQuestionsByExamId(int examId)
-        //{
-        //    return _examRepository.GetQuestionsByExamId(examId);
-        //}
+        public void SaveExamResult(ExamResult examResult)
+        {
+            _examRepository.SaveExamResult(examResult);
+        }
+        public List<ExamQuestion> GetExamQuestionsForExam(int examId)
+        {
+            return _examRepository.GetExamQuestionsForExam(examId);
+        }
 
         public void SaveStudentAnswer(StudentAnswer studentAnswer)
         {
@@ -160,8 +186,102 @@ namespace ExamHub.Services.Implementations
         {
              _examRepository.SaveStudentExam(studentExam);
         }
+        public StudentResponseModel SaveExam(TakeExamViewModel takeExamViewModel)
+        {
+            var stringUserId = _httpContext.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = int.Parse(stringUserId);
+            var student = _studentRepository.GetStudentByUserId(userId);
 
-      
+            var exam = _examRepository.GetExamById(takeExamViewModel.ExamId);
+            var listanswer = new ListAnswer
+            {
+
+                StudentId = student.Id,
+                ExamId = exam.Id,
+                CreatedAt = DateTime.Now,
+                CreatedBy = stringUserId
+
+            };
+            _listAnswerReposity.Add(listanswer);
+
+            // Save student's answers
+            foreach (var question in takeExamViewModel.Questions)
+            {
+                var studentAnswer = new StudentAnswer
+                {
+                    StudentId = student.Id,
+                    QuestionId = question.QuestionId,
+                    SelectedOptionId = question.SelectedOptionId,
+                    ListAnswerId = listanswer.Id
+                };
+                _examRepository.SaveStudentAnswer(studentAnswer);
+            }
+
+            return new StudentResponseModel
+            {
+                FristName = student.User.FirstName,
+                LastName = student.User.LastName,
+                Id = student.Id
+            };
+        }
+
+        public double CalculateScore(int studentId, int examId)
+        {
+            var correctAnswers = _examQuestionService.GetCorrectAnswersForExam(examId);
+
+            if (correctAnswers == null || !correctAnswers.Any())
+            {
+                throw new Exception("No correct answers found for the specified exam.");
+            }
+
+            
+            var studentAnswers = _studentRepository.GetStudentAnswersForExam(studentId, examId).ToList();
+
+            if (studentAnswers == null || !studentAnswers.Any())
+            {
+                throw new Exception("No student answers found for the specified exam.");
+            }
+
+            int score = 0;
+            int totalQuestions = correctAnswers.Count();
+
+            
+            for (int i = 0; i < studentAnswers.Count; i++)
+            {
+                var answer = studentAnswers[i];
+                if (answer.SelectedOptionId == answer.ExamQuestion.CorrectAnswer)
+                {
+                    score++;
+                }
+            }
+
+            // Calculate the percentage
+            double percentage = ((double)score / totalQuestions) * 100;
+
+            return percentage;
+        }
+
+        public ExamQuestion GetExamQuestionById(int id)
+        {
+            return _examRepository.GetExamQuestionById(id);
+        }
+
+        public void UpdateExamQuestion(ExamQuestion examQuestion)
+        {
+            _examRepository.UpdateExamQuestion(examQuestion);
+        }
+
+        public void DeleteExamQuestion(int id)
+        {
+            _examRepository.DeleteExamQuestion(id);
+        }
+
+
+
+
+
+
+
     }
 
 }

@@ -25,10 +25,26 @@ namespace ExamHub.Services.Implementations
             });
         }
 
-        public void CreateSubject(string name)
+        public void CreateSubject(Subject subject)
         {
-            var subject = new Subject { Id = _subjectRepository.GetAllSubjects().Count() + 1, SubjectName = name };
+            subject.Id = _subjectRepository.GetAllSubjects().Count() + 1;
             _subjectRepository.AddSubject(subject);
         }
+
+        public void UpdateSubject(int id, string newName)
+        {
+            var subject = _subjectRepository.GetSubjectById(id);
+            if (subject != null)
+            {
+                subject.SubjectName = newName;
+                _subjectRepository.UpdateSubject(subject);
+            }
+        }
+
+        public void DeleteSubject(int id)
+        {
+            _subjectRepository.DeleteSubject(id);
+        }
+
     }
 }

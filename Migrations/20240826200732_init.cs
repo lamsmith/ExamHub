@@ -55,22 +55,6 @@ namespace ExamHub.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "StudentAnswers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    StudentId = table.Column<int>(type: "int", nullable: false),
-                    QuestionId = table.Column<int>(type: "int", nullable: false),
-                    SelectedOptionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StudentAnswers", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -206,7 +190,7 @@ namespace ExamHub.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     SubjectName = table.Column<string>(type: "longtext", nullable: false),
-                    CreatedByPrincipalId = table.Column<int>(type: "int", nullable: false),
+                    PrincipalId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "longtext", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     ModifiedBy = table.Column<string>(type: "longtext", nullable: true),
@@ -216,8 +200,8 @@ namespace ExamHub.Migrations
                 {
                     table.PrimaryKey("PK_Subjects", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Subjects_Principals_CreatedByPrincipalId",
-                        column: x => x.CreatedByPrincipalId,
+                        name: "FK_Subjects_Principals_PrincipalId",
+                        column: x => x.PrincipalId,
                         principalTable: "Principals",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -245,6 +229,27 @@ namespace ExamHub.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClassStudents_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "GeneralExamResults",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    Percentage = table.Column<double>(type: "double", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GeneralExamResults", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GeneralExamResults_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
@@ -410,7 +415,7 @@ namespace ExamHub.Migrations
                     ExamId = table.Column<int>(type: "int", nullable: false),
                     QuestionNo = table.Column<int>(type: "int", nullable: false),
                     QuestionText = table.Column<string>(type: "longtext", nullable: false),
-                    CorrectAnswer = table.Column<string>(type: "longtext", nullable: false)
+                    CorrectAnswer = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -419,6 +424,74 @@ namespace ExamHub.Migrations
                         name: "FK_ExamQuestions_Exams_ExamId",
                         column: x => x.ExamId,
                         principalTable: "Exams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ExamResults",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    GeneralExamResultId = table.Column<int>(type: "int", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    ExamId = table.Column<int>(type: "int", nullable: false),
+                    Score = table.Column<int>(type: "int", nullable: false),
+                    Percentage = table.Column<double>(type: "double", nullable: false),
+                    ExamDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExamResults", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExamResults_Exams_ExamId",
+                        column: x => x.ExamId,
+                        principalTable: "Exams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExamResults_GeneralExamResults_GeneralExamResultId",
+                        column: x => x.GeneralExamResultId,
+                        principalTable: "GeneralExamResults",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ExamResults_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "ListAnswers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    ExamId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<string>(type: "longtext", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "longtext", nullable: true),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ListAnswers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ListAnswers_Exams_ExamId",
+                        column: x => x.ExamId,
+                        principalTable: "Exams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ListAnswers_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -476,16 +549,51 @@ namespace ExamHub.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "StudentAnswers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    QuestionId = table.Column<int>(type: "int", nullable: false),
+                    StudentId = table.Column<int>(type: "int", nullable: false),
+                    SelectedOptionId = table.Column<int>(type: "int", nullable: false),
+                    ListAnswerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentAnswers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudentAnswers_ExamQuestions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "ExamQuestions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentAnswers_ListAnswers_ListAnswerId",
+                        column: x => x.ListAnswerId,
+                        principalTable: "ListAnswers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentAnswers_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "Classes",
                 columns: new[] { "Id", "ClassName", "CreatedAt", "CreatedBy", "CreatedByPrincipalId", "ModifiedAt", "ModifiedBy" },
                 values: new object[,]
                 {
-                    { 1, "JSS 1", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9232), "1", 0, null, null },
-                    { 2, "JSS 2", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9236), "1", 0, null, null },
-                    { 3, "JSS 3", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9238), "1", 0, null, null },
-                    { 4, "SSS 1", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9240), "1", 0, null, null },
-                    { 5, "SSS 2", new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9242), "1", 0, null, null }
+                    { 1, "JSS 1", new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8341), "1", 0, null, null },
+                    { 2, "JSS 2", new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8347), "1", 0, null, null },
+                    { 3, "JSS 3", new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8351), "1", 0, null, null },
+                    { 4, "SSS 1", new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8355), "1", 0, null, null },
+                    { 5, "SSS 2", new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8360), "1", 0, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -493,9 +601,9 @@ namespace ExamHub.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7583), "admin", null, null, "Principal" },
-                    { 2, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7608), "admin", null, null, "Teacher" },
-                    { 3, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7612), "admin", null, null, "Student" }
+                    { 1, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5485), "admin", null, null, "Principal" },
+                    { 2, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5513), "admin", null, null, "Teacher" },
+                    { 3, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5517), "admin", null, null, "Student" }
                 });
 
             migrationBuilder.InsertData(
@@ -503,25 +611,25 @@ namespace ExamHub.Migrations
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "DateOfBirth", "FirstName", "Gender", "LastName", "ModifiedAt", "ModifiedBy", "Password", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8540), "1", new DateTime(2000, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "ib", 1, "ibbb", null, null, "admin", 1, "admin" },
-                    { 2, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8679), "1", new DateTime(1999, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mko", 1, "axc", null, null, "teacher", 2, "teacher" },
-                    { 3, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8725), "1", new DateTime(2005, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "jnr", 1, "ib", null, null, "student", 3, "student" }
+                    { 1, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(6901), "1", new DateTime(2000, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "ib", 1, "ibbb", null, null, "admin", 1, "admin" },
+                    { 2, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7050), "1", new DateTime(1999, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mko", 1, "axc", null, null, "teacher", 2, "teacher" },
+                    { 3, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7144), "1", new DateTime(2005, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "jnr", 1, "ib", null, null, "student", 3, "student" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Principals",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "UserId" },
-                values: new object[] { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9127), "1", null, null, 1 });
+                values: new object[] { 1, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8129), "1", null, null, 1 });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "UserId" },
-                values: new object[] { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8791), "1", null, null, 3 });
+                values: new object[] { 1, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7403), "1", null, null, 3 });
 
             migrationBuilder.InsertData(
                 table: "Teachers",
                 columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "UserId" },
-                values: new object[] { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9177), "1", null, null, 2 });
+                values: new object[] { 1, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8247), "1", null, null, 2 });
 
             migrationBuilder.InsertData(
                 table: "ClassStudents",
@@ -535,8 +643,8 @@ namespace ExamHub.Migrations
 
             migrationBuilder.InsertData(
                 table: "Subjects",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "CreatedByPrincipalId", "ModifiedAt", "ModifiedBy", "SubjectName" },
-                values: new object[] { 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9530), "1", 1, null, null, "Math" });
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "ModifiedAt", "ModifiedBy", "PrincipalId", "SubjectName" },
+                values: new object[] { 1, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8468), "1", null, null, 1, "Math" });
 
             migrationBuilder.InsertData(
                 table: "ClassSubjects",
@@ -546,7 +654,7 @@ namespace ExamHub.Migrations
             migrationBuilder.InsertData(
                 table: "Exams",
                 columns: new[] { "Id", "ClassId", "CreatedAt", "CreatedBy", "CreatedByTeacherId", "EndTime", "ExamName", "ModifiedAt", "ModifiedBy", "StartTime", "SubjectId" },
-                values: new object[] { 1, 1, new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9659), "1", 1, new DateTime(2024, 8, 4, 17, 30, 0, 0, DateTimeKind.Unspecified), "frist term", null, null, new DateTime(2024, 8, 4, 15, 30, 0, 0, DateTimeKind.Unspecified), 1 });
+                values: new object[] { 1, 1, new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8588), "1", 1, new DateTime(2024, 8, 4, 17, 30, 0, 0, DateTimeKind.Unspecified), "frist term", null, null, new DateTime(2024, 8, 4, 15, 30, 0, 0, DateTimeKind.Unspecified), 1 });
 
             migrationBuilder.InsertData(
                 table: "SubjectStudents",
@@ -561,7 +669,11 @@ namespace ExamHub.Migrations
             migrationBuilder.InsertData(
                 table: "ExamQuestions",
                 columns: new[] { "Id", "CorrectAnswer", "ExamId", "QuestionNo", "QuestionText" },
-                values: new object[] { 1, "D", 1, 1, "What is 2+2?" });
+                values: new object[,]
+                {
+                    { 1, 2, 1, 1, "What is 2+2?" },
+                    { 2, 7, 1, 2, "What is the secret code?" }
+                });
 
             migrationBuilder.InsertData(
                 table: "StudentExams",
@@ -576,7 +688,11 @@ namespace ExamHub.Migrations
                     { 1, 1, "A", "3" },
                     { 2, 1, "B", "4" },
                     { 3, 1, "C", "5" },
-                    { 4, 1, "D", "6" }
+                    { 4, 1, "D", "6" },
+                    { 5, 2, "A", "abc" },
+                    { 6, 2, "B", "123" },
+                    { 7, 2, "C", "zxsdc" },
+                    { 8, 2, "D", "xyz" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -615,6 +731,21 @@ namespace ExamHub.Migrations
                 column: "ExamId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ExamResults_ExamId",
+                table: "ExamResults",
+                column: "ExamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExamResults_GeneralExamResultId",
+                table: "ExamResults",
+                column: "GeneralExamResultId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExamResults_StudentId",
+                table: "ExamResults",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Exams_ClassId",
                 table: "Exams",
                 column: "ClassId");
@@ -628,6 +759,21 @@ namespace ExamHub.Migrations
                 name: "IX_Exams_SubjectId",
                 table: "Exams",
                 column: "SubjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GeneralExamResults_StudentId",
+                table: "GeneralExamResults",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ListAnswers_ExamId",
+                table: "ListAnswers",
+                column: "ExamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ListAnswers_StudentId",
+                table: "ListAnswers",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_UserId",
@@ -645,6 +791,21 @@ namespace ExamHub.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StudentAnswers_ListAnswerId",
+                table: "StudentAnswers",
+                column: "ListAnswerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentAnswers_QuestionId",
+                table: "StudentAnswers",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentAnswers_StudentId",
+                table: "StudentAnswers",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StudentExams_ExamId",
                 table: "StudentExams",
                 column: "ExamId");
@@ -660,9 +821,9 @@ namespace ExamHub.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subjects_CreatedByPrincipalId",
+                name: "IX_Subjects_PrincipalId",
                 table: "Subjects",
-                column: "CreatedByPrincipalId");
+                column: "PrincipalId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubjectStudents_StudentId",
@@ -708,6 +869,9 @@ namespace ExamHub.Migrations
                 name: "ClassTeachers");
 
             migrationBuilder.DropTable(
+                name: "ExamResults");
+
+            migrationBuilder.DropTable(
                 name: "Notifications");
 
             migrationBuilder.DropTable(
@@ -726,13 +890,19 @@ namespace ExamHub.Migrations
                 name: "SubjectTeachers");
 
             migrationBuilder.DropTable(
+                name: "GeneralExamResults");
+
+            migrationBuilder.DropTable(
                 name: "ExamQuestions");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "ListAnswers");
 
             migrationBuilder.DropTable(
                 name: "Exams");
+
+            migrationBuilder.DropTable(
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Classes");

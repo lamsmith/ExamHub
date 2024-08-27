@@ -42,12 +42,38 @@ namespace ExamHub.Controllers
                     Id = ct.Class.Id,
                     ClassName = ct.Class.ClassName
                 }).ToList(),
+                CurrentClassId = classTeachers[0].Id,
                 Subjects = subjectTeachers.Select(st => new SubjectResponseModel
                 {
                     Id = st.Subject.Id,
                     SubjectName = st.Subject.SubjectName
                 }).ToList()
             };
+            return View(viewModel);
+        }
+
+        public IActionResult ViewStudents(int classId)
+        {
+            var students = _studentService.GetStudentsByClass(classId);
+
+            //var viewModel = new ClassStudentsViewModel
+            //{
+            //    Students = students.Select(s => new StudentResponseModel
+            //    {
+            //        Class = 
+            //    }
+            //    )
+            //};
+
+            var viewModel = new ClassStudentsViewModel
+            {
+                Students = students.Select(s => new StudentViewModel
+                {
+                    FullName = s.FristName + " " + s.LastName,
+                    ClassName = s.ClassName
+                }).ToList()
+            };
+
             return View(viewModel);
         }
 
@@ -94,23 +120,8 @@ namespace ExamHub.Controllers
             return View(model);
         }
 
-        public IActionResult ViewStudents(int classId)
-        {
-             var students = _studentService. GetStudentsByClass(classId);
+       
 
-            var viewModel = new ClassStudentsViewModel
-            {
-                Students = students.Select(s => new StudentViewModel
-                {
-                    StudentId = s.Id,
-                    StudentName = s.FristName + " " + s.LastName,
-                    
-                }).ToList()
-            };
-
-
-            return View(viewModel);
-        }
 
         public IActionResult ViewExamScores()
         {
@@ -156,7 +167,84 @@ namespace ExamHub.Controllers
                 }).ToList()
             };
             return View(model);
-        }     
+        }
+
+        public IActionResult ViewExamQuestion(int id)
+        {
+            // Fetch the exam question from the service using the provided id
+            var examQuestion = _examService.GetExamQuestionById(id);
+
+            // Check if the exam question exists
+            if (examQuestion == null)
+            {
+                return NotFound(); // Or you can return a custom error view
+            }
+
+            // Map the entity to the view model
+            var viewModel = new ExamQuestionsViewModel
+            {
+                Id = examQuestion.Id,
+                ExamId = examQuestion.ExamId,
+                QuestionNo = examQuestion.QuestionNo,
+                QuestionText = examQuestion.QuestionText,
+                CorrectAnswer = examQuestion.CorrectAnswer,
+                Options = examQuestion.Options.Select(o => new OptionViewModel
+                {
+                    OptionId = o.Id,
+                    OptionText = o.OptionText
+                }).ToList()
+            };
+
+            // Pass the view model to the view
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditExamQuestion(EditExamQuestionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var question = new ExamQuestion
+                {
+                    Id = model.Id,
+                    QuestionText = model.QuestionText,
+                    Options = model.Options.Select(o => new Option
+                    {
+                        Id = o.OptionId,
+                        OptionText = o.OptionText
+                    }).ToList()
+                };
+
+                _examService.UpdateExamQuestion(question);
+
+                return RedirectToAction("ViewExamQuestions", new { examId = model.Id });
+            }
+
+            return View(model);
+        }
+
+        public IActionResult DeleteExamQuestion(int id)
+        {
+            var question = _examService.GetExamQuestionById(id);
+            if (question == null)
+                return NotFound();
+
+            var viewModel = new DeleteExamQuestionViewModel
+            {
+                Id = question.Id,
+                QuestionText = question.QuestionText
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost, ActionName("DeleteExamQuestion")]
+        public IActionResult DeleteExamQuestionConfirmed(int id)
+        {
+            _examService.DeleteExamQuestion(id);
+            return RedirectToAction("ViewExamQuestions", new { examId = id });
+        }
+
     }
 }
 

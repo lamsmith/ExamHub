@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/css/login.css"/>
 @* } *@
 
-<div class="login-container">
+@* <div class="login-container">
     <div class="login-box">
         <h2> Login Form</h2>
         <form action="/Account/Login" method="post">
@@ -21,3 +21,34 @@
         </form>
     </div>
 </div>
+ *@
+
+ <head>
+    <title>ExamHub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-section">
+            <h2>Login ✌️</h2>
+            
+            <form method="post" action="/Account/Login">
+                <label for="email">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your Username">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your Password">
+                <a href="#" class="forgot-password">Forget Password?</a>
+                <button type="submit" class="login-btn">Login</button>
+                
+            </form>
+        </div>
+        <div class="info-section">
+            <p>Empowering educators to shape the future, one question at a time. ✌️</p>
+
+            <div class="image-container">
+                <img src="~/css/images/student.PNG" alt="Woman with a laptop">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

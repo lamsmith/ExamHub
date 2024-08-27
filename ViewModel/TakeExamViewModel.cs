@@ -10,6 +10,12 @@ namespace ExamHub.ViewModel
         public int ExamId { get; set; }
         public string ExamName { get; set; }
         public List<QuestionViewModel> Questions { get; set; }
+        public int RemainingTimeInSeconds { get; set; }
+        public int CurrentQuestionIndex { get; set; } // Add this property
+        public int TotalQuestions { get; set; } // Add this property
+        public QuestionViewModel Question { get; set; } // Add this property
+        public DateTime EndTime { get; set; }
+        public DateTime StartTime { get; set; }
     }
 
     public class QuestionViewModel

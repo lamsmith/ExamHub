@@ -6,69 +6,65 @@
 }
 
 <head>
-    <link rel="stylesheet" href="~/css/Student.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="~/css/TakeExam.css">
 </head>
+<div class="container mt-5">
+    <h1 class="mb-4">@Model.ExamName</h1>
 
-<div class="container-fluid mt-5">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-md-2">
-            <div class="sidebar">
-                <div class="sidebar-header">
-                    <img src="path/to/your/logo.png" alt="Logo" class="logo">
+    <div id="countdown"></div>
+
+    <form asp-action="SubmitExam" method="post">
+        <input type="hidden" asp-for="@Model.ExamId" value="@Model.ExamId" />
+        <input type="hidden" asp-for="@Model.ExamName" value="@Model.ExamName" />
+
+        @for (int i = 0; i < Model.Questions.Count; i++)
+        {
+            <input type="hidden" asp-for="@Model.Questions[i].QuestionId" value="@Model.Questions[i].QuestionId" />
+            <input type="hidden" asp-for="@Model.Questions[i].QuestionText" value="@Model.Questions[i].QuestionText" />
+
+            <div class="mb-3">
+                <h4>@Model.Questions[i].QuestionText</h4>
+                <div class="form-check">
+                    @for (int j = 0; j < Model.Questions[i].Options.Count; j++)
+                    {
+                        <input type="hidden" asp-for="@Model.Questions[i].Options[j].OptionId" value="@Model.Questions[i].Options[j].OptionId" />
+                        <input class="form-check-input" type="radio" asp-for="@Model.Questions[i].SelectedOptionId" value="@Model.Questions[i].Options[j].OptionId" />
+                        <label class="form-check-label">
+                            @Model.Questions[i].Options[j].OptionText
+                        </label>
+                    }
                 </div>
-                <ul class="sidebar-menu">
-                    <li><a class="sidebar-link" asp-action="Dashboard" asp-controller="Student"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a class="sidebar-link" asp-action="Exams" asp-controller="Student"><i class="fas fa-book"></i> Exams</a></li>
-                    <li><a class="sidebar-link" asp-action="Results" asp-controller="Student"><i class="fas fa-chart-bar"></i> Results</a></li>
-                    <li><a class="sidebar-link" asp-action="Schedule" asp-controller="Student"><i class="fas fa-calendar-alt"></i> Schedule</a></li>
-                    <li><a class="sidebar-link" asp-action="Profile" asp-controller="Student"><i class="fas fa-user"></i> Profile</a></li>
-                    <li><a class="sidebar-link" asp-action="Notifications" asp-controller="Student"><i class="fas fa-bell"></i> Notifications</a></li>
-                    <li><a class="sidebar-link logout" asp-action="Logout" asp-controller="Account"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
             </div>
-        </div>
+        }
 
-        <!-- Main Content -->
-        <div class="col-md-8">
-            <div class="content">
-                <h2>@Model.ExamName</h2>
-                <form asp-action="SubmitExam" method="post">
-                    @foreach (var question in Model.Questions)
-                    {
-                        <div class="question">
-                            <h3>@question.QuestionText</h3>
-                            <ul>
-                                @foreach (var option in question.Options)
-                                {
-                                    <li>
-                                        <input type="radio" name="Questions[@Model.Questions.IndexOf(question)].SelectedOptionId" value="@option.OptionId" />
-                                        <label>@option.OptionText</label>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    }
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Question Navigation Panel -->
-        <div class="col-md-2">
-            <div class="question-nav">
-                <ul>
-                    @for (int i = 0; i < Model.Questions.Count; i++)
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link @(Model.Questions[i].SelectedOptionId != 0 ? "faded" : "")" href="#">
-                                @i + 1
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
-    </div>
+        <button type="submit" class="btn btn-success">Submit Exam</button>
+    </form>
 </div>
+
+<script>
+    function startCountdown(endTime) {
+        var countdownElement = document.getElementById("countdown");
+
+        function updateCountdown() {
+            var now = new Date().getTime();
+            var distance = endTime - now;
+
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+
+            if (distance < 0) {
+                clearInterval(interval);
+                countdownElement.innerHTML = "EXPIRED";
+                window.location.href = '@Url.Action("Exams", "Student")';
+            }
+        }
+
+        var interval = setInterval(updateCountdown, 1000);
+    }
+
+    var endTime = new Date('@Model.EndTime.ToString("yyyy-MM-ddTHH:mm:ssZ")').getTime();
+    startCountdown(endTime);
+</script>

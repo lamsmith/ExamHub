@@ -16,5 +16,7 @@ namespace ExamHub.Entity
         public ICollection<StudentExam> StudentExams { get; set; }
         public DateTime StartTime { get; set; }    
         public DateTime EndTime { get; set; }
+        public ICollection<ExamResult> ExamResults { get; set; } = new List<ExamResult>();
+        public ICollection<ListAnswer> listanswers { get; set; } = new List<ListAnswer>();
     }
 }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamHub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240804143141_init")]
+    [Migration("20240826200732_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -57,7 +57,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 1,
                             ClassName = "JSS 1",
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9232),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8341),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -65,7 +65,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 2,
                             ClassName = "JSS 2",
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9236),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8347),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -73,7 +73,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 3,
                             ClassName = "JSS 3",
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9238),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8351),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -81,7 +81,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 4,
                             ClassName = "SSS 1",
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9240),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8355),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -89,7 +89,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 5,
                             ClassName = "SSS 2",
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9242),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8360),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         });
@@ -239,7 +239,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 1,
                             ClassId = 1,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9659),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8588),
                             CreatedBy = "1",
                             CreatedByTeacherId = 1,
                             EndTime = new DateTime(2024, 8, 4, 17, 30, 0, 0, DateTimeKind.Unspecified),
@@ -255,9 +255,8 @@ namespace ExamHub.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("CorrectAnswer")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("CorrectAnswer")
+                        .HasColumnType("int");
 
                     b.Property<int>("ExamId")
                         .HasColumnType("int");
@@ -279,11 +278,107 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CorrectAnswer = "D",
+                            CorrectAnswer = 2,
                             ExamId = 1,
                             QuestionNo = 1,
                             QuestionText = "What is 2+2?"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CorrectAnswer = 7,
+                            ExamId = 1,
+                            QuestionNo = 2,
+                            QuestionText = "What is the secret code?"
                         });
+                });
+
+            modelBuilder.Entity("ExamHub.Entity.ExamResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ExamDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GeneralExamResultId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Percentage")
+                        .HasColumnType("double");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamId");
+
+                    b.HasIndex("GeneralExamResultId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("ExamResults");
+                });
+
+            modelBuilder.Entity("ExamHub.Entity.GeneralExamResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<double>("Percentage")
+                        .HasColumnType("double");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("GeneralExamResults");
+                });
+
+            modelBuilder.Entity("ExamHub.Entity.ListAnswer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("ListAnswers");
                 });
 
             modelBuilder.Entity("ExamHub.Entity.Notification", b =>
@@ -376,6 +471,34 @@ namespace ExamHub.Migrations
                             ExamQuestionId = 1,
                             OptionLabel = "D",
                             OptionText = "6"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ExamQuestionId = 2,
+                            OptionLabel = "A",
+                            OptionText = "abc"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ExamQuestionId = 2,
+                            OptionLabel = "B",
+                            OptionText = "123"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ExamQuestionId = 2,
+                            OptionLabel = "C",
+                            OptionText = "zxsdc"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ExamQuestionId = 2,
+                            OptionLabel = "D",
+                            OptionText = "xyz"
                         });
                 });
 
@@ -411,7 +534,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9127),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8129),
                             CreatedBy = "1",
                             UserId = 1
                         });
@@ -448,21 +571,21 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7583),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5485),
                             CreatedBy = "admin",
                             Name = "Principal"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7608),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5513),
                             CreatedBy = "admin",
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(7612),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5517),
                             CreatedBy = "admin",
                             Name = "Student"
                         });
@@ -500,7 +623,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8791),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7403),
                             CreatedBy = "1",
                             UserId = 3
                         });
@@ -510,6 +633,9 @@ namespace ExamHub.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ListAnswerId")
                         .HasColumnType("int");
 
                     b.Property<int>("QuestionId")
@@ -522,6 +648,12 @@ namespace ExamHub.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListAnswerId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("StudentAnswers", (string)null);
                 });
@@ -579,14 +711,14 @@ namespace ExamHub.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("CreatedByPrincipalId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("longtext");
+
+                    b.Property<int>("PrincipalId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SubjectName")
                         .IsRequired()
@@ -594,7 +726,7 @@ namespace ExamHub.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatedByPrincipalId");
+                    b.HasIndex("PrincipalId");
 
                     b.ToTable("Subjects");
 
@@ -602,9 +734,9 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9530),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8468),
                             CreatedBy = "1",
-                            CreatedByPrincipalId = 1,
+                            PrincipalId = 1,
                             SubjectName = "Math"
                         });
                 });
@@ -699,7 +831,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(9177),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8247),
                             CreatedBy = "1",
                             UserId = 2
                         });
@@ -759,7 +891,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8540),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(6901),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(2000, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "ib",
@@ -772,7 +904,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8679),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7050),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(1999, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Mko",
@@ -785,7 +917,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 8, 4, 15, 31, 38, 462, DateTimeKind.Local).AddTicks(8725),
+                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7144),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(2005, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "jnr",
@@ -892,6 +1024,63 @@ namespace ExamHub.Migrations
                     b.Navigation("Exam");
                 });
 
+            modelBuilder.Entity("ExamHub.Entity.ExamResult", b =>
+                {
+                    b.HasOne("ExamHub.Entity.Exam", "Exam")
+                        .WithMany("ExamResults")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ExamHub.Entity.GeneralExamResult", "GeneralExamResult")
+                        .WithMany("ExamResults")
+                        .HasForeignKey("GeneralExamResultId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ExamHub.Entity.Student", "Student")
+                        .WithMany("ExamResults")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("GeneralExamResult");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("ExamHub.Entity.GeneralExamResult", b =>
+                {
+                    b.HasOne("ExamHub.Entity.Student", "Student")
+                        .WithMany("GeneralExamResults")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("ExamHub.Entity.ListAnswer", b =>
+                {
+                    b.HasOne("ExamHub.Entity.Exam", "Exam")
+                        .WithMany("listanswers")
+                        .HasForeignKey("ExamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ExamHub.Entity.Student", "Student")
+                        .WithMany("listanswers")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exam");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("ExamHub.Entity.Notification", b =>
                 {
                     b.HasOne("ExamHub.Entity.User", "User")
@@ -936,6 +1125,33 @@ namespace ExamHub.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ExamHub.Entity.StudentAnswer", b =>
+                {
+                    b.HasOne("ExamHub.Entity.ListAnswer", "ListAnswer")
+                        .WithMany("StudentAnswer")
+                        .HasForeignKey("ListAnswerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ExamHub.Entity.ExamQuestion", "ExamQuestion")
+                        .WithMany("StudentAnswers")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ExamHub.Entity.Student", "Student")
+                        .WithMany("StudentAnswers")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExamQuestion");
+
+                    b.Navigation("ListAnswer");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("ExamHub.Entity.StudentExam", b =>
                 {
                     b.HasOne("ExamHub.Entity.Exam", "Exam")
@@ -957,11 +1173,13 @@ namespace ExamHub.Migrations
 
             modelBuilder.Entity("ExamHub.Entity.Subject", b =>
                 {
-                    b.HasOne("ExamHub.Entity.Principal", null)
+                    b.HasOne("ExamHub.Entity.Principal", "Principal")
                         .WithMany()
-                        .HasForeignKey("CreatedByPrincipalId")
+                        .HasForeignKey("PrincipalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Principal");
                 });
 
             modelBuilder.Entity("ExamHub.Entity.SubjectStudent", b =>
@@ -1039,12 +1257,28 @@ namespace ExamHub.Migrations
                 {
                     b.Navigation("ExamQuestions");
 
+                    b.Navigation("ExamResults");
+
                     b.Navigation("StudentExams");
+
+                    b.Navigation("listanswers");
                 });
 
             modelBuilder.Entity("ExamHub.Entity.ExamQuestion", b =>
                 {
                     b.Navigation("Options");
+
+                    b.Navigation("StudentAnswers");
+                });
+
+            modelBuilder.Entity("ExamHub.Entity.GeneralExamResult", b =>
+                {
+                    b.Navigation("ExamResults");
+                });
+
+            modelBuilder.Entity("ExamHub.Entity.ListAnswer", b =>
+                {
+                    b.Navigation("StudentAnswer");
                 });
 
             modelBuilder.Entity("ExamHub.Entity.Role", b =>
@@ -1056,9 +1290,17 @@ namespace ExamHub.Migrations
                 {
                     b.Navigation("ClassStudents");
 
+                    b.Navigation("ExamResults");
+
+                    b.Navigation("GeneralExamResults");
+
+                    b.Navigation("StudentAnswers");
+
                     b.Navigation("StudentExams");
 
                     b.Navigation("SubjectStudents");
+
+                    b.Navigation("listanswers");
                 });
 
             modelBuilder.Entity("ExamHub.Entity.Subject", b =>

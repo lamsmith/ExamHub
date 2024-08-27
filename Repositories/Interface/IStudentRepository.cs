@@ -16,7 +16,8 @@ namespace ExamHub.Repositories.Interface
         IEnumerable<StudentExam> GetRecentExamResults(int studentId);
         void AddStudent(Student student);
         void AssignStudentToClass(int studentId, int classId);
-
+        IEnumerable<int> GetSelectedOptionTextsForExam(int examId, int studentId);
+        IEnumerable<StudentAnswer> GetStudentAnswersForExam(int studentId, int examId);
 
 
     }

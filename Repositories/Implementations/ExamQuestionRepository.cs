@@ -1,6 +1,7 @@
 ﻿using ExamHub.Context;
 using ExamHub.Entity;
 using ExamHub.Repositories.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamHub.Repositories.Implementations
 {
@@ -20,7 +21,10 @@ namespace ExamHub.Repositories.Implementations
 
         public ExamQuestion GetExamQuestionById(int id)
         {
-            return _context.ExamQuestions.FirstOrDefault(eq => eq.Id == id);
+            return
+                _context.ExamQuestions
+                .Include(eq => eq.Options)
+                .FirstOrDefault(eq => eq.Id == id);
         }
 
         public void AddExamQuestion(ExamQuestion examQuestion)
@@ -44,7 +48,29 @@ namespace ExamHub.Repositories.Implementations
                 _context.SaveChanges();
             }
         }
+        public IEnumerable<int> GetCorrectAnswersForExam(int examId)
+        {
+                  
+            var correctAnswers = _context.ExamQuestions
+                .Where(q => q.ExamId == examId)
+                .SkipWhile(q => q == null )
+                .Select(q => q.CorrectAnswer)
+                .ToList();
 
+         
+            return correctAnswers;
+        }
+
+
+
+
+        public IEnumerable<ExamQuestion> GetQuestionsForExam(int examId)
+        {
+            return _context.ExamQuestions
+                .Where(eq => eq.ExamId == examId)
+                .Include(eq => eq.Options) // Include options if needed
+                .ToList();
+        }
 
     }
 }

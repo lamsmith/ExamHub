@@ -10,6 +10,7 @@ namespace ExamHub.Services.Inteface
         void AddExamQuestion(ExamQuestion examQuestion);
         void UpdateExamQuestion(ExamQuestion examQuestion);
         void DeleteExamQuestion(int id);
+        public IEnumerable<int> GetCorrectAnswersForExam(int examId);
         CreateExamQuestionResponseModel CreateExamQuestion(CreateExamQuestionRequestModel request);
         
 

@@ -105,5 +105,25 @@ namespace ExamHub.Repositories.Implementations
             .ThenInclude( cs => cs.Class)
                 .FirstOrDefault(s => s.UserId == userId);
         }
+
+        public IEnumerable <int> GetSelectedOptionTextsForExam(int examId, int studentId)
+        {
+            var selectedOptions = _context.StudentAnswers
+                .Where(sa => sa.ExamQuestion.ExamId == examId && sa.StudentId == studentId)
+                 .Select(sa => sa.SelectedOptionId)
+                .ToList();
+
+            return selectedOptions;
+        }
+
+        public IEnumerable<StudentAnswer> GetStudentAnswersForExam(int studentId, int examId)
+        {
+            return _context.StudentAnswers
+                 .Include(sa => sa.ExamQuestion) // Include the question if needed
+                .Where(sa => sa.StudentId == studentId && sa.ExamQuestion.ExamId == examId) 
+                
+
+                .ToList();
+        }
     }
 }

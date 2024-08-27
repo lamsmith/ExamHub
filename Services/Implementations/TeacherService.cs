@@ -126,5 +126,31 @@ namespace ExamHub.Services.Implementations
             return _teacherRepository.GetTeacherByUserId(userId);
         }
 
-    }    
+        public void UpdateTeacher(Teacher teacher)
+        {
+            _teacherRepository.UpdateTeacher(teacher);
+        }
+
+        public void RemoveTeacherFromClass(int teacherId, int classId)
+        {
+            _teacherRepository.RemoveTeacherFromClass(teacherId, classId);
+        }
+
+        public void RemoveTeacherFromSubject(int teacherId, int subjectId)
+        {
+            _teacherRepository.RemoveTeacherFromSubject(teacherId, subjectId);
+        }
+
+        public void DeleteTeacher(int teacherId)
+        {
+            _teacherRepository.DeleteTeacher(teacherId);
+        }
+
+        public Teacher GetTeacherById(int id)
+        {
+            return _teacherRepository.GetTeacherById(id);
+        }
+
+
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ExamHub.Context;
+using ExamHub.DTO;
 using ExamHub.Entity;
 using ExamHub.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,11 @@ namespace ExamHub.Repositories.Implementation
             _context = context;
         }
 
-     
+        public void SaveExamResult(ExamResult examResult)
+        {
+            _context.ExamResults.Add(examResult);
+            _context.SaveChanges();
+        }
 
         public void AddExam(Exam exam)
         {
@@ -109,19 +114,12 @@ namespace ExamHub.Repositories.Implementation
             _context.SaveChanges();
         }
 
-        //public IEnumerable<Exam> GetExamsForStudent(int studentId)
-        //{
-        //    return _context.Exams
-        //        .Where(e => e.StudentExams.Any(se => se.StudentId == studentId))
-        //        .ToList();
-        //}
-
         public IEnumerable<Exam> GetExamsForStudent(int classId)
         {
             var today = DateTime.Today;
 
             var examForStudent = _context.Exams
-                
+
                 .Include(e => e.Subject)
                 .Where(e => e.ClassId == classId && e.StartTime.Date == today)
                 .ToList();
@@ -129,15 +127,6 @@ namespace ExamHub.Repositories.Implementation
             return examForStudent;
 
 
-            //var classIds = _context.ClassStudents
-            //                       .Where(cs => cs.StudentId == studentId)
-            //                       .Select(cs => cs.ClassId)
-            //                       .ToList();
-
-            //return _context.Exams
-            //               .Include(e => e.Subject) // Include the Subject entity if needed
-            //               .Where(e => classIds.Contains(e.ClassId))
-            //               .ToList();
         }
 
         public IEnumerable<Exam> GetUpcomingExamsByClass(int classId)
@@ -150,15 +139,64 @@ namespace ExamHub.Repositories.Implementation
                 .Where(e => e.ClassId == classId && e.EndTime > now)
                 .ToList();
 
-            //Console.WriteLine($"Upcoming and Ongoing Exams for Class {classId}: {upcomingExams.Count}");
-
-         
-            //foreach (var exam in upcomingExams)
-            //{
-            //    Console.WriteLine($"Exam Id: {exam.Id}, StartTime: {exam.StartTime}, EndTime: {exam.EndTime}, Subject: {exam.Subject.SubjectName}");
-            //}
-
             return upcomingExams;
         }
+
+        public List<ExamQuestion> GetExamQuestionsForExam(int examId)
+        {
+            return _context.ExamQuestions.Where(eq => eq.ExamId == examId).ToList();
+        }
+
+        public List<StudentAnswer> GetStudentAnswersForExam(int studentId, int examId)
+        {
+            return _context.StudentAnswers
+                .Where(sa => sa.StudentId == studentId && sa.ExamQuestion.ExamId == examId)
+                .ToList();
+        }
+
+        public IEnumerable<StudentAnswerResponseModel> GetSelectedOptionTextsForExam(int examId, int studentId)
+        {
+            var result = from sa in _context.StudentAnswers
+                         join q in _context.ExamQuestions on sa.QuestionId equals q.Id
+                         join o in _context.Options on sa.SelectedOptionId equals o.Id
+                         where sa.StudentId == studentId && q.ExamId == examId
+                         select new StudentAnswerResponseModel
+                         {
+                             QuestionId = q.Id,
+                             SelectedOptionText = o.OptionText
+                         };
+
+            return result.ToList();
+        }
+
+        public ExamQuestion GetExamQuestionById(int id)
+        {
+            return _context.ExamQuestions.Include(q => q.Options).FirstOrDefault(q => q.Id == id);
+        }
+
+        public void UpdateExamQuestion(ExamQuestion examQuestion)
+        {
+            var existingQuestion = _context.ExamQuestions.Include(q => q.Options).FirstOrDefault(q => q.Id == examQuestion.Id);
+            if (existingQuestion != null)
+            {
+                existingQuestion.QuestionNo = examQuestion.QuestionNo;
+                existingQuestion.QuestionText = examQuestion.QuestionText;
+                existingQuestion.Options = examQuestion.Options;
+                existingQuestion.CorrectAnswer = examQuestion.CorrectAnswer;
+
+            }
+        }
+
+        public void DeleteExamQuestion(int id)
+        {
+            var question = _context.ExamQuestions.FirstOrDefault(q => q.Id == id);
+            if (question != null)
+            {
+                _context.ExamQuestions.Remove(question);
+            }
+        }
+
     }
+
+
 }

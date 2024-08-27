@@ -1,17 +1,18 @@
-﻿namespace ExamHub.ViewModel
+﻿using ExamHub.DTO;
+
+namespace ExamHub.ViewModel
 {
     public class ClassStudentsViewModel
     {
-        public int ClassId { get; set; }
-        public string ClassName { get; set; }
         public List<StudentViewModel> Students { get; set; }
+        //public IEnumerable<ClassResponseModel> Classes { get; set; }
+        //public IEnumerable<StudentResponseModel> Students { get; set; }
+
     }
 
     public class StudentViewModel
     {
-        public int StudentId { get; set; }
-        public string StudentName { get; set; }
-        public string Username { get; set; }
-     
+        public string FullName { get; set; }
+        public string ClassName { get; set; }
     }
 }
