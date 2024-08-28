@@ -19,9 +19,13 @@ public class GeneralExamResultService : IGeneralExamResultService
     //{
     //    return await _generalExamResultRepository.GetGeneralExamResultByStudentIdAsync(studentId);
     //}
-    public async Task<IEnumerable<GeneralExamResult>> GetAllResultsForPrincipalAsync(string principalName)
+    public async Task<IEnumerable<GeneralExamResultDto>> GetAllResultsForPrincipalAsync(string principalName)
     {
-        return await _generalExamResultRepository.GetResultsForPrincipalAsync(principalName);
+        var results = await _generalExamResultRepository.GetResultsForPrincipalAsync(principalName);
+        return results.ToList().Select(res => new GeneralExamResultDto
+        {
+            
+        }) ;
     }
 
     public async Task<IEnumerable<GeneralExamResult>> GetResultsForTeacherAsync(string teacherName, int examId)
