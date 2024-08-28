@@ -14,4 +14,5 @@ namespace ExamHub.ViewModel
          public IEnumerable<ClassTeacher> ClassTeachers { get; set; }
         public IEnumerable<SubjectTeacher> SubjectTeachers { get; set; }
     }
+
 }

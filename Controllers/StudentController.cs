@@ -173,6 +173,7 @@ namespace ExamHub.Controllers
 
         public IActionResult SubmitExam(TakeExamViewModel model)
             {
+
             if (model.ExamId == 0)
             {
                 
@@ -181,10 +182,16 @@ namespace ExamHub.Controllers
             }
 
             var saveExam = _examService.SaveExam(model);
-           
+
+            var stringUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = int.Parse(stringUserId);
+
+            var student = _studentService.GetStudentByUserId(userId);
+
+
             var studentExam = new StudentExam
             {
-                StudentId = saveExam.Id,
+                StudentId = student.Id,
                 ExamId = model.ExamId,
                 Completed = true,
                 CompletionTime = DateTime.Now
@@ -202,7 +209,7 @@ namespace ExamHub.Controllers
         
                 generalExamResult = new GeneralExamResult
                 {
-                    StudentId = studentExam.Id,
+                    StudentId = student.Id,
                     Percentage = percentage
                 };
                 _context.GeneralExamResults.Add(generalExamResult);
@@ -210,7 +217,7 @@ namespace ExamHub.Controllers
             }
 
      
-            var examResult = new ExamResult
+            var examResult = new Entity.ExamResult
             {
                 GeneralExamResultId = generalExamResult.Id, 
                 StudentId = studentExam.Id,
@@ -219,11 +226,17 @@ namespace ExamHub.Controllers
                 Percentage = percentage,
                 ExamDate = DateTime.Now
             };
+            var resultViewModel = new ResultViewModel
+            {
+                Score = (int)(percentage / 100 * model.Questions.Count),
+                Percentage = percentage,
+                ExamDate = DateTime.Now
+            };
 
             _examService.SaveExamResult(examResult);
 
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewGeneralExamResult");
         }
 
 
@@ -259,7 +272,7 @@ namespace ExamHub.Controllers
         }
 
 
-        public IActionResult ViewResults()
+        public IActionResult ViewGeneralExamResult()
         {
             var stringUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var userId = int.Parse(stringUserId);

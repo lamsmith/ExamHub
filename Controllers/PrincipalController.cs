@@ -16,13 +16,15 @@ namespace ExamHub.Controllers
         private readonly ITeacherService _teacherService;
         private readonly IStudentService _studentService;
         private readonly IClassService _classService;
+        private readonly IGeneralExamResultService _generalExamResultService;
         private readonly ISubjectService _subjectService;
-        public PrincipalController(ITeacherService teacherService, IStudentService studentService, IClassService classService, ISubjectService  subjectService)
+        public PrincipalController(ITeacherService teacherService, IGeneralExamResultService generalExamResultService, IStudentService studentService, IClassService classService, ISubjectService  subjectService)
         {
             _teacherService = teacherService;
             _studentService = studentService;
             _classService = classService;
             _subjectService = subjectService;
+            _generalExamResultService = generalExamResultService;
         }
         public IActionResult Index()
         {
@@ -438,6 +440,13 @@ namespace ExamHub.Controllers
         {
             _teacherService.DeleteTeacher(id);
             return RedirectToAction("ViewTeachers");
+        }
+        
+        public async Task<IActionResult> ViewResults()
+        {
+
+            var results = await _generalExamResultService.GetAllResultsForPrincipalAsync("Admin");
+            return View(results);
         }
 
     }

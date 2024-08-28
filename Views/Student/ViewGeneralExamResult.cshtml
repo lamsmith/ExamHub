@@ -1,0 +1,99 @@
+﻿@using ExamHub.ViewModel;
+@model GeneralExamResultViewModel
+
+
+@{
+    ViewData["Title"] = "Exam Result";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 bg-light vh-100">
+                <div class="sidebar-header text-center py-4">
+                    @* <img src="path/to/your/logo.png" alt="Logo" class="logo img-fluid"> *@
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-action="Dashboard" asp-controller="Student">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Exams" asp-controller="Student" asp-route-classId="1">
+                            <i class="fas fa-book"></i> Exams
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="ViewGeneralExamResult" asp-controller="Student">
+                            <i class="fas fa-chart-bar"></i> Results
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Schedule" asp-controller="Student">
+                            <i class="fas fa-calendar-alt"></i> Schedule
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Profile" asp-controller="Student">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Notifications" asp-controller="Student">
+                            <i class="fas fa-bell"></i> Notifications
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" asp-action="Logout" asp-controller="Account">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="container mt-4">
+                    <div class="container mt-5">
+                        <div class="text-center">
+                            <h1 class="mb-4">General Exam Result</h1>
+                            <h3>Total Percentage: @Model.TotalPercentage%</h3>
+                        </div>
+
+                        <div class="mt-5">
+                            <h4 class="mb-3">Detailed Exam Results</h4>
+
+                            <div class="list-group">
+                                @foreach (var result in Model.ExamResults)
+                                {
+                                    <div class="list-group-item mb-3">
+                                        <h5>@result.Subject</h5>
+                                        <p><strong>Score:</strong> @result.Score</p>
+                                        <p><strong>Percentage:</strong> @result.Percentage%</p>
+                                        <p><strong>Exam Date:</strong> @result.ExamDate.ToString("MMMM dd, yyyy HH:mm:ss")</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a href="@Url.Action("Exams", "Student")" class="btn btn-primary">Back to Exams</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

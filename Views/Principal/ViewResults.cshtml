@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ExamHub.ViewModel.GeneralExamResultViewModel>
+
+@{
+    Layout = null;
+}
+
+<title>Student List</title>
+<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+            <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+            <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="ManageClasses" asp-controller="Principal">Classes</a></li>
+            <li><a asp-action="ManageSubjects" asp-controller="Principal">Subjects</a></li>
+            <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+            <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <div class="container mt-5">
+            <div class="text-center">
+                <h1 class="mb-4">General Exam Results</h1>
+            </div>
+
+            @foreach (var generalResult in Model)
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Student: @generalResult.Student.FullName</h4>
+                        <h5>Total Percentage: @generalResult.Percentage%</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <h6>Exam Results:</h6>
+                        <ul class="list-group">
+                            @foreach (var examResult in generalResult.ExamResults)
+                            {
+                                <li class="list-group-item">
+                                    <strong>Subject:</strong> @examResult.Exam.Subject.SubjectName <br />
+                                    <strong>Score:</strong> @examResult.Score <br />
+                                    <strong>Percentage:</strong> @examResult.Percentage% <br />
+                                    <strong>Exam Date:</strong> @examResult.ExamDate.ToString("MMMM dd, yyyy HH:mm:ss")
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Exams", "Student")" class="btn btn-primary">Back to Exams</a>
+            </div>
+        </div>
+    </div>
+</div>
