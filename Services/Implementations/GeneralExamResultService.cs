@@ -60,5 +60,8 @@ public class GeneralExamResultService : IGeneralExamResultService
         return viewModel;
     }
 
-
+    Task<IEnumerable<GeneralExamResult>> IGeneralExamResultService.GetAllResultsForPrincipalAsync(string principalName)
+    {
+        throw new NotImplementedException();
+    }
 }
