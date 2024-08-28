@@ -37,7 +37,7 @@ namespace ExamHub.Services.Implementations
                 Id = getClasses.Id,
                 Students = getClasses.ClassStudents.Select(s => new StudentResponseModel
                 {
-                    FristName = s.Student.User.FirstName,
+                    FirstName = s.Student.User.FirstName,
                     LastName = s.Student.User.LastName,
                 }).ToList()
             };

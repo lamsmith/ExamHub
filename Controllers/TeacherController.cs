@@ -69,7 +69,7 @@ namespace ExamHub.Controllers
             {
                 Students = students.Select(s => new StudentViewModel
                 {
-                    FullName = s.FristName + " " + s.LastName,
+                    FullName = s.FirstName + " " + s.LastName,
                     ClassName = s.ClassName
                 }).ToList()
             };
@@ -112,12 +112,6 @@ namespace ExamHub.Controllers
                 return RedirectToAction("UploadExamQuestions", "ExamQuestions", new {
                 examId = examId
             });
-            if (ModelState.IsValid)
-            {
-               
-            }
-
-            return View(model);
         }
 
        

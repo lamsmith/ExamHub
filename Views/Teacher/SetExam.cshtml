@@ -4,22 +4,23 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Set Exam</title>
     <link rel="stylesheet" href="~/css/TeacherDashBoard/SetExam.css">
-</head>
-<body>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
+
     <div class="dashboard-container">
         <div class="sidebar">
             <h2>Dashboard</h2>
             <ul>
                 <li><a asp-action="Dashboard" asp-controller="Teacher">Home</a></li>
                 <li><a asp-action="SetExam" asp-controller="Teacher">Set Exam</a></li>
-                <li><a asp-action="ViewClass" asp-controller="Teacher">View Class</a></li>
+                @* <li><a asp-action="ViewClass" asp-controller="Teacher">View Class</a></li> *@
                 <li><a asp-action="ViewExamScores" asp-controller="Teacher">View Exam Scores</a></li>
                 <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
             </ul>
@@ -29,7 +30,7 @@
                 <h1>Set Exam</h1>
                 <p>Fill in the details to create a new exam</p>
             </header>
-            <section>
+        <section style="width:33pc">
                 <form asp-action="SetExam" method="post" onsubmit="return validateDates()">
                     <div class="form-group">
                         <label asp-for="ExamName">Exam Name</label>
@@ -107,5 +108,3 @@
             return true;
         }
     </script>
-</body>
-</html>

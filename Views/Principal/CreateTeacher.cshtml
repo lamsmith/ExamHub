@@ -6,6 +6,9 @@
 
 <title>Create Teacher</title>
 <link rel="stylesheet" href="~/css/CreateTeacher.css">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
 
 <div class="dashboard-container">
     <div class="sidebar">
@@ -24,43 +27,43 @@
         <header>
             <h1>Create Teacher</h1>
         </header>
-        <section class="create-teacher">
+        <section class="create-teacher" style="width:33pc">
             <form asp-action="CreateTeacher" asp-controller="Principal" method="post">
-                <div class="form-group">
+                <div class="form-group" style="margin:0 20px">
                     <label asp-for="FirstName"></label>
-                    <input asp-for="FirstName" id="FirstName" class="form-control" oninput="updateUserNameAndPassword()" />
+                    <input asp-for="FirstName" id="FirstName" class="form-control" />
                     <span asp-validation-for="FirstName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin:0 20px">
                     <label asp-for="LastName"></label>
-                    <input asp-for="LastName" id="LastName" class="form-control" oninput="updateUserNameAndPassword()" />
+                    <input asp-for="LastName" id="LastName" class="form-control"/>
                     <span asp-validation-for="LastName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin:0 20px">
                     <label asp-for="UserName"></label>
-                    <input asp-for="UserName" id="UserName" class="form-control" readonly />
+                    <input asp-for="UserName" id="UserName" class="form-control" />
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin:0 20px">
                     <label asp-for="Password"></label>
-                    <input asp-for="Password" id="Password" class="form-control" readonly />
+                    <input asp-for="Password" id="Password" class="form-control" type="password" />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label for="dateOfBirth">Date of Birth:</label>
-                    <input type="date" id="dateOfBirth"  name="DateOfBirth" required />
+                <div class="form-group" style="margin:0 20px">
+                    <label asp-for="DateOfBirth"></label>
+                    <input asp-for="DateOfBirth" type="date" id="dateOfBirth" name="DateOfBirth" class="form-control" required />
                 </div>
-                <div class="form-group">
-                    <label for="gender">Gender:</label>
-                    <select id="gender" name="Gender" required>
+                <div class="form-group" style="margin:0 20px">
+                    <label asp-for="Gender"></label>
+                    <select class="form-control" id="gender" name="Gender" required>
                         <option value="0">Male</option>
                         <option value="1">Female</option>
                         <option value="2">Other</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="classId">Class:</label>
-                    <select id="classId" name="ClassId" required>
+                <div class="form-group" style="margin:0 20px">
+                    <label>Class</label>
+                    <select class="form-control" id="classId" name="ClassId" multiple required>
                         @if (Model.Classes != null && Model.Classes.Any())
                         {
                             @foreach (var cls in Model.Classes)
@@ -70,9 +73,9 @@
                         }
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin:0 20px">
                     <label for="subjectId">Subject:</label>
-                    <select id="subjectId" name="SubjectId" required>
+                    <select class="form-control" id="subjectId" name="SubjectId" multiple required>
                         @if (Model.Subjects != null && Model.Subjects.Any())
                         {
                             @foreach (var subject in Model.Subjects)
@@ -82,18 +85,8 @@
                         }
                     </select>
                 </div>
-                <button type="submit">Create Teacher</button>
+                <button class="btn btn-primary" style="margin-top:20px; margin-left: 29pc" type="submit">Create Teacher</button>
             </form>
         </section>
     </div>
 </div>
-
-<script>
-    function updateUserNameAndPassword() {
-        var firstName = document.getElementById("FirstName").value;
-        var lastName = document.getElementById("LastName").value;
-
-        document.getElementById("UserName").value = firstName;
-        document.getElementById("Password").value = lastName;
-    }
-</script>

@@ -6,7 +6,9 @@
 
 <title>Student List</title>
 <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
-
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
 <div class="dashboard-container">
     <div class="sidebar">
         <h2>Dashboard</h2>
@@ -39,10 +41,12 @@
             </form>
         </section>
         <section class="student-list">
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>UserName</th>
                         <th>Class</th>
                     </tr>
                 </thead>
@@ -50,11 +54,10 @@
                     @foreach (var student in Model.Students)
                     {
                         <tr>
-                            <td>@student.FristName @student.LastName</td>
-                            @foreach (var cls in student.Class)
-                            {
-                                <td>@cls.ClassName</td>
-                            }
+                            <td>@student.FirstName</td>
+                            <td>@student.LastName</td>
+                            <td>@student.UserName</td>
+                            <td>@student.ClassName</td>
                         </tr>
                     }
                 </tbody>

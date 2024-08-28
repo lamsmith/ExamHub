@@ -219,7 +219,7 @@ namespace ExamHub.Services.Implementations
 
             return new StudentResponseModel
             {
-                FristName = student.User.FirstName,
+                FirstName = student.User.FirstName,
                 LastName = student.User.LastName,
                 Id = student.Id
             };

@@ -15,7 +15,7 @@ namespace ExamHub.Repositories.Implementations
 
         public User Authenticate(string username, string password)
         {
-            return _context.Users.Include(x => x.Role).SingleOrDefault(u => u.Username == username && u.Password == password);
+            return _context.Users.Include(x => x.Role).FirstOrDefault(u => u.Username == username && u.Password == password);
         }
         public User GetUserByName(string userName)
         {

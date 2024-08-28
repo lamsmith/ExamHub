@@ -13,12 +13,12 @@ namespace ExamHub.Repositories.Interface
         IEnumerable<Exam> GetUpcomingExams(int studentId);
         public Student GetStudentByUserId(int userId);
         Student GetStudentById(int studentId);
+        Student GetStudentByUserName(string userName);
         IEnumerable<StudentExam> GetRecentExamResults(int studentId);
         void AddStudent(Student student);
         void AssignStudentToClass(int studentId, int classId);
         IEnumerable<int> GetSelectedOptionTextsForExam(int examId, int studentId);
         IEnumerable<StudentAnswer> GetStudentAnswersForExam(int studentId, int examId);
-
 
     }
 }

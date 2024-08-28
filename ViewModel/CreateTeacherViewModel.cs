@@ -11,9 +11,9 @@ namespace ExamHub.ViewModel
         public string Password { get; set; }    
         public DateTime DateOfBirth { get; set; }
         public Gender Gender { get; set; }
-       // public string Subject { get; set; }
-        public int ClassId { get; set; }
-        public int SubjectId { get; set; }
+        // public string Subject { get; set; }
+        public List<int> ClassId { get; set; } = new();
+        public List<int> SubjectId { get; set; } = new();
         public IEnumerable<ClassResponseModel> Classes { get; set; }
         public IEnumerable<SubjectResponseModel> Subjects { get; set; }
     }

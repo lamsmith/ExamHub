@@ -28,7 +28,7 @@ namespace ExamHub.Services.Implementations
             return teachers.Select(t => new TeacherResponseModel
             {
                 Id = t.Id,
-                FristName = t.User.FirstName,
+                FirstName = t.User.FirstName,
                 LastName = t.User.LastName,
                  Subjects = t.SubjectTeachers.Select(s => s.Subject).ToList(),
                  Class = t.ClassTeachers.Select(s => s.Class).ToList(),
@@ -102,23 +102,21 @@ namespace ExamHub.Services.Implementations
                 CreatedBy = "1"
                 
             };
-
-            var subjectTeacher = new SubjectTeacher
+            foreach (var item in model.SubjectId)
             {
-                Teacher = teacher,
-                SubjectId = model.SubjectId
-            };
-
-           
-            var classTeacher = new ClassTeacher
+                teacher.SubjectTeachers.Add(new SubjectTeacher
+                {
+                    SubjectId = item
+                });
+            }
+            foreach (var item in model.ClassId)
             {
-                Teacher = teacher,
-                ClassId = model.ClassId
-            };
-
+                teacher.ClassTeachers.Add(new ClassTeacher
+                {
+                    ClassId = item
+                });
+            }
             _teacherRepository.CreateTeacher(teacher);
-            _subjectTeacherRepository.CreateSubjectTeacher(subjectTeacher);
-            _classTeacherRepository.CreateClassTeacher(classTeacher);
         }
 
         public Teacher GetTeacherByUserId(int userId)

@@ -27,7 +27,6 @@ namespace ExamHub.Services.Implementations
 
         public void CreateSubject(Subject subject)
         {
-            subject.Id = _subjectRepository.GetAllSubjects().Count() + 1;
             _subjectRepository.AddSubject(subject);
         }
 

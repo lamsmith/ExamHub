@@ -20,7 +20,7 @@ namespace ExamHub.Repositories.Implementations
 
         public IEnumerable<Student> GetAllStudents()
         {
-            return _context.Students.Include(s => s.User).ToList();
+            return _context.Students.Include(x => x.ClassStudents).Include(s => s.User).ToList();
         }
 
         public IEnumerable<Exam> GetAvailableExams(string studentName)
@@ -71,6 +71,11 @@ namespace ExamHub.Repositories.Implementations
         {
           return _context.Students.Include(s => s.User)
                                      .FirstOrDefault(s => s.Id == studentId);
+        }
+        public Student GetStudentByUserName(string userName)
+        {
+          return _context.Students.Include(s => s.User)
+                                     .FirstOrDefault(s => s.User.Username == userName);
         }
 
         public IEnumerable<StudentExam> GetRecentExamResults(int studentId)

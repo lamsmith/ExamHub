@@ -2,35 +2,63 @@
 
 @{
     ViewData["Title"] = "Edit Teacher";
+    Layout = null;
 }
 
-<h2>Edit Teacher</h2>
+<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
 
-<form asp-action="EditTeacher" method="post">
-    <input type="hidden" asp-for="Id" />
 
-    <div class="form-group">
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" class="form-control" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+            <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+            <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="ManageClasses" asp-controller="Principal">Classes</a></li>
+            <li><a asp-action="ManageSubjects" asp-controller="Principal">Subjects</a></li>
+            <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+            <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+        </ul>
     </div>
+    <div class="main-content">
+        <header>
+            <h1>Edit Teacher</h1>
+        </header>
+        <section class="create-teacher" style="width:33pc">
+            <form asp-action="EditTeacher" method="post" style="width:33pc">
+                <input type="hidden" asp-for="Id" />
 
-    <div class="form-group">
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" class="form-control" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
+                <div class="form-group">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="classes">Assigned Classes</label>
+                    <select asp-for="AssignedClassIds" class="form-control" asp-items="@(new MultiSelectList(Model.AllClasses, "Id", "ClassName"))" multiple="multiple"></select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subjects">Assigned Subjects</label>
+                    <select asp-for="AssignedSubjectIds" class="form-control" asp-items="@(new MultiSelectList(Model.AllSubjects, "Id", "SubjectName"))" multiple="multiple"></select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-action="ViewTeachers" class="btn btn-secondary">Cancel</a>
+            </form>
+
+
+        </section>
     </div>
-
-    <div class="form-group">
-        <label for="classes">Assigned Classes</label>
-        <select asp-for="AssignedClassIds" class="form-control" asp-items="@(new MultiSelectList(Model.AllClasses, "Id", "ClassName"))" multiple="multiple"></select>
-    </div>
-
-    <div class="form-group">
-        <label for="subjects">Assigned Subjects</label>
-        <select asp-for="AssignedSubjectIds" class="form-control" asp-items="@(new MultiSelectList(Model.AllSubjects, "Id", "SubjectName"))" multiple="multiple"></select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a asp-action="ViewTeachers" class="btn btn-secondary">Cancel</a>
-</form>
+</div>

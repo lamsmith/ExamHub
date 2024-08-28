@@ -12,13 +12,13 @@ namespace ExamHub.Services.Implementations
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly ApplicationDbContext _context;
+        private readonly IClassRepository _classRepository;
 
 
-        public StudentService(IStudentRepository studentRepository, ApplicationDbContext context)
+        public StudentService(IStudentRepository studentRepository, IClassRepository classRepository)
         {
             _studentRepository = studentRepository;
-            _context = context;
+            _classRepository = classRepository;
         }
 
         public IEnumerable<StudentResponseModel> GetAllStudent()
@@ -27,7 +27,7 @@ namespace ExamHub.Services.Implementations
             return getAllStudent.Select(x => new StudentResponseModel
             {
                 Id = x.Id,
-                FristName = x.User.FirstName,
+                FirstName = x.User.FirstName,
                 LastName = x.User.LastName,
             });
         }
@@ -48,13 +48,15 @@ namespace ExamHub.Services.Implementations
 
         public IEnumerable<StudentResponseModel> GetStudentsByClass(int classId)
         {
-            var getStudentByClass = _studentRepository.GetStudentsByClass(classId);
-            return getStudentByClass.Select(s => new StudentResponseModel
+            List<Student> students = classId == 0 ? _studentRepository.GetAllStudents().ToList() : _studentRepository.GetStudentsByClass(classId).ToList();
+
+            return students.Select(s => new StudentResponseModel
             {
                 Id = s.Id,
-                FristName = s.User.FirstName,
+                FirstName = s.User.FirstName,
                 LastName = s.User.LastName,
-                Class = s.ClassStudents.Select(cs => cs.Class).ToList(),             
+                UserName = s.User.Username,
+                ClassName = (s.ClassStudents.Select(cs => cs.Class).Count() > 0 ) ? s.ClassStudents.Select(cs => cs.Class).ToList()[0].ClassName : ""
             });
         }
 
@@ -64,7 +66,7 @@ namespace ExamHub.Services.Implementations
             return students.Select(s => new StudentResponseModel
             {
                 Id = s.Id,
-                FristName = s.User.FirstName,
+                FirstName = s.User.FirstName,
                 LastName = s.User.LastName,
             });
         }
@@ -92,8 +94,12 @@ namespace ExamHub.Services.Implementations
               
             });
         }
-         public void CreateStudent(CreateStudentRequestModel model)
+         public BaseResponse CreateStudent(CreateStudentRequestModel model)
         {
+            var existingStudent = _studentRepository.GetStudentByUserName(model.UserName);
+            if (existingStudent != null) {
+                return new BaseResponse { Message = "There's an existing user with the user name", Status = false };
+            }
             var user = new User
             {
                 Username = model.UserName,
@@ -114,11 +120,14 @@ namespace ExamHub.Services.Implementations
                 CreatedAt = DateTime.Now,
                 CreatedBy = "1",
             };
-
-          
-
+            var studentclass = _classRepository.GetClassById(model.ClassId);
+            student.ClassStudents.Add(new ClassStudent
+            {
+                Class = studentclass
+            });
             _studentRepository.AddStudent(student);
             _studentRepository.AssignStudentToClass(student.Id, model.ClassId);
+            return new BaseResponse { Message = "Student created successfully", Status = true };
         }
 
         public void AssignStudentToClass(int studentId, int classId)
@@ -133,9 +142,7 @@ namespace ExamHub.Services.Implementations
 
         public IEnumerable<int> GetStudentAnswersForExam(int studentId, int examId)
         {
-            return _context.StudentAnswers
-                .Where(sa => sa.StudentId == studentId && sa.ExamQuestion.ExamId == examId)
-                 .Include(sa => sa.ExamQuestion) // Include the question if needed
+            return _studentRepository.GetStudentAnswersForExam(studentId, examId)
                 .Select(sa => sa.SelectedOptionId)
                 .ToList();
         }

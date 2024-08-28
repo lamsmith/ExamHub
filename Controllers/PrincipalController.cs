@@ -97,7 +97,7 @@ namespace ExamHub.Controllers
         {
             var clas = _classService.GetAllClasses();
             ViewBag.Class = new SelectList(clas, "Id", "ClassName");
-            return View();
+            return View(new BaseResponse());
         }
 
         [HttpPost]
@@ -105,14 +105,15 @@ namespace ExamHub.Controllers
         {
             if (ModelState.IsValid)
             {
-                _studentService.CreateStudent(model);
-                return RedirectToAction("Index");
+                var response = _studentService.CreateStudent(model);
+                var clas = _classService.GetAllClasses();
+                ViewBag.Class = new SelectList(clas, "Id", "ClassName");
+                return View(response);
             }
-            // Repopulate classes in case of validation errors
-            var classes = _classService.GetAllClasses();
-            ViewBag.Class = new SelectList(classes, "Id", "ClassName");
-
-            return View(model);
+            var @class = _classService.GetAllClasses();
+            ViewBag.Class = new SelectList(@class, "Id", "ClassName");
+            return View(new BaseResponse { Message="Model not valid", Status = false});
+            
         }
 
       
@@ -405,8 +406,6 @@ namespace ExamHub.Controllers
         [HttpPost]
         public IActionResult EditTeacher(EditTeacherViewModel model)
         {
-            if (ModelState.IsValid)
-            {
                 var teacher = _teacherService.GetTeacherById(model.Id);
                 if (teacher == null)
                 {
@@ -415,16 +414,23 @@ namespace ExamHub.Controllers
 
                 teacher.User.FirstName = model.FirstName;
                 teacher.User.LastName = model.LastName;
-                // Remove current assignments
-                _teacherService.RemoveTeacherFromClass(teacher.Id, model.RemovedClassId);
-                _teacherService.RemoveTeacherFromSubject(teacher.Id, model.RemovedSubjectId);
-                // Add new assignments
-                _teacherService.AssignTeacherToClassAndSubject(teacher.Id, model.NewClassId, model.NewSubjectId);
-
-                _teacherService.UpdateTeacher(teacher);
-                return RedirectToAction("ViewTeachers");
+            foreach (var item in model.AssignedSubjectIds)
+            {
+                teacher.SubjectTeachers.Add(new SubjectTeacher
+                {
+                    SubjectId = item
+                });
             }
-            return View(model);
+            foreach (var item in model.AssignedClassIds)
+            {
+                teacher.ClassTeachers.Add(new ClassTeacher
+                {
+                    ClassId = item
+                });
+            }
+            _teacherService.UpdateTeacher(teacher);
+                return RedirectToAction("ViewTeachers");
+            
         }
 
         [HttpPost]

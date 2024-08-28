@@ -5,8 +5,11 @@
 }
 
 <title>Teacher List</title>
-<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
 
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
 <div class="dashboard-container">
     <div class="sidebar">
         <h2>Dashboard</h2>
@@ -26,9 +29,9 @@
             <p>Manage teachers and assign them to classes</p>
             <a class="btn btn-primary" asp-action="CreateTeacher" asp-controller="Principal">Create Teacher</a>
         </header>
-        <section class="teacher-list">
-            <table class="table table-striped table-bordered">
-                <thead class="thead-dark">
+        <section class="create-teacher">
+            <table class="table">
+                <thead>
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Class</th>
@@ -40,7 +43,7 @@
                     @foreach (var teacher in Model.Teachers)
                     {
                         <tr>
-                            <td>@teacher.FristName @teacher.LastName</td>
+                            <td>@teacher.FirstName @teacher.LastName</td>
                             <td>
                                 @if (teacher.Class != null && teacher.Class.Any())
                                 {

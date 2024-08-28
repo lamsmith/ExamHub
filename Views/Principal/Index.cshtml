@@ -31,20 +31,44 @@
                 <h1>Welcome, @Model.PrincipalName</h1>
                 <p>Your dashboard overview</p>
             </header>
-            <section class="cards">
-                <div class="card">
-                    <h3>Total Teachers</h3>
-                    <p>@Model.TotalTeachers</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="icon text-warning">
+                                &#128179; <!-- Replace with appropriate icon -->
+                            </div>
+                            <div class="card-title">@Model.TotalTeachers</div>
+                            <div class="small-text text-warning">Total Teachers</div>
+                            <div class="trend text-danger">Total numbers of registered teachers</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3>Total Students</h3>
-                    <p>@Model.TotalStudents</p>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="icon text-danger">
+                                &#128214; <!-- Replace with appropriate icon -->
+                            </div>
+                            <div class="card-title">@Model.TotalStudents</div>
+                            <div class="small-text text-warning">Total Students</div>
+                            <div class="trend text-danger">Total numbers of registered students</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card">
-                    <h3>Classes</h3>
-                  
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="icon text-info">
+                                &#128142; <!-- Replace with appropriate icon -->
+                            </div>
+                            <div class="card-title">29</div>
+                            <div class="small-text text-info">Classes</div>
+                            <div class="trend text-success">Number of classes</div>
+                        </div>
+                    </div>
                 </div>
-            </section>
+            </div>
         </div>
     </div>
 </body>

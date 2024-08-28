@@ -4,60 +4,54 @@
     Layout = null;
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Subjects</title>
-    <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
-</head>
-<body>
-    <div class="dashboard-container">
-        <div class="sidebar">
-            <h2>Dashboard</h2>
-            <ul>
-                <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
-                <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
-                <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
-                <li><a asp-action="ManageClasses" asp-controller="Principal">Classes</a></li>
-                <li><a asp-action="ManageSubjects" asp-controller="Principal">Subjects</a></li>
-                <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
-                <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
-            </ul>
-        </div>
-        <div class="main-content">
-            <header>
-                <h1>Manage Subjects</h1>
-            </header>
-            <section class="content">
-                <a href="@Url.Action("CreateSubject", "Principal")" class="btn btn-primary">Create New Subject</a>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Subject ID</th>
-                            <th>Subject Name</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var subjectModel in Model)
-                        {
-                            <tr>
-                                <td>@subjectModel.Id</td>
-                                <td>@subjectModel.SubjectName</td>
-                                <td>
-                                    <a href="@Url.Action("EditSubject", "Principal", new { id = subjectModel.Id })" class="btn btn-warning">Edit</a>
-                                    <form action="@Url.Action("DeleteSubject", "Principal", new { id = subjectModel.Id })" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </section>
-        </div>
+<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+            <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+            <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="ManageClasses" asp-controller="Principal">Classes</a></li>
+            <li><a asp-action="ManageSubjects" asp-controller="Principal">Subjects</a></li>
+            <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+            <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+        </ul>
     </div>
-</body>
-</html>
+    <div class="main-content">
+        <header>
+            <h1>Manage Subjects</h1>
+        </header>
+        <section class="content">
+            <a href="@Url.Action("CreateSubject", "Principal")" class="btn btn-primary">Create New Subject</a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Subject ID</th>
+                        <th>Subject Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var subjectModel in Model)
+                    {
+                        <tr>
+                            <td>@subjectModel.Id</td>
+                            <td>@subjectModel.SubjectName</td>
+                            <td>
+                                <a href="@Url.Action("EditSubject", "Principal", new { id = subjectModel.Id })" class="btn btn-warning">Edit</a>
+                                <form action="@Url.Action("DeleteSubject", "Principal", new { id = subjectModel.Id })" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>

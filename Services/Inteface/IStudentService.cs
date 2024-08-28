@@ -13,7 +13,7 @@ namespace ExamHub.Services.Inteface
         IEnumerable<StudentResponseModel> GetStudents(int teacherId);       
         Student GetStudentById(int studentId);
         IEnumerable<ExamResponseModel> GetUpcomingExams(int studentId);
-        public void CreateStudent(CreateStudentRequestModel model);
+        BaseResponse CreateStudent(CreateStudentRequestModel model);
         public void AssignStudentToClass(int studentId, int classId);
         public Student GetStudentByUserId(int userId);
         public IEnumerable<int> GetStudentAnswersForExam(int studentId, int examId);
