@@ -5,57 +5,88 @@
     Layout = null;
 }
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="~/css/Student.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    <title>@ViewData["Title"]</title>
 </head>
-
-
-<div class="container mt-5">
-    <div class="sidebar">
-        <div class="sidebar-header">
-            
-        </div>
-        <ul class="sidebar-menu">
-            <li><a class="sidebar-link" asp-action="Dashboard" asp-controller="Student"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-            <li><a class="sidebar-link" asp-action="Exams" asp-route-classId = "@Model.CurrentClassId"  asp-controller="Student"><i class="fas fa-book"></i> Exams</a></li>
-            <li><a class="sidebar-link" asp-action="Results" asp-controller="Student"><i class="fas fa-chart-bar"></i> Results</a></li>
-            <li><a class="sidebar-link" asp-action="Schedule" asp-controller="Student"><i class="fas fa-calendar-alt"></i> Schedule</a></li>
-            <li><a class="sidebar-link" asp-action="Profile" asp-controller="Student"><i class="fas fa-user"></i> Profile</a></li>
-            <li><a class="sidebar-link" asp-action="Notifications" asp-controller="Student"><i class="fas fa-bell"></i> Notifications</a></li>
-            <li><a class="sidebar-link logout" asp-action="Logout" asp-controller="Account"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        <h1 class="mb-4">Student Dashboard</h1>
-        <div class="section">
-          <h2>Upcoming Exams</h2>
-            <ul>
-                @foreach (var exam in Model.UpcomingExams)
-                {
-                    var now = DateTime.Now;
-                    bool isOngoing = exam.StartTime <= now && exam.EndTime >= now;
-
-                    <li>
-                        @exam.Subject - @exam.StartTime - @exam.EndTime
-                        @if (isOngoing)
-                        {
-                            <span style="color: red;">(Ongoing)</span>
-                        }
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 bg-light vh-100">
+                <div class="sidebar-header text-center py-4">
+                     @* <img src="path/to/your/logo.png" alt="Logo" class="logo img-fluid"> *@
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-action="Dashboard" asp-controller="Student">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
                     </li>
-                }
-            </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Exams" asp-controller="Student" asp-route-classId="@Model.CurrentClassId">
+                            <i class="fas fa-book"></i> Exams
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="ViewGeneralExamResult" asp-controller="Student">
+                            <i class="fas fa-chart-bar"></i> Results
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Schedule" asp-controller="Student">
+                            <i class="fas fa-calendar-alt"></i> Schedule
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Profile" asp-controller="Student">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Notifications" asp-controller="Student">
+                            <i class="fas fa-bell"></i> Notifications
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" asp-action="Logout" asp-controller="Account">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <div class="container mt-4">
+                    <h1 class="mb-4">Student Dashboard</h1>
+                    <div class="section">
+                        <h2>Upcoming Exams</h2>
+                        <ul>
+                            @foreach (var exam in Model.UpcomingExams)
+                            {
+                                var now = DateTime.Now;
+                                bool isOngoing = exam.StartTime <= now && exam.EndTime >= now;
 
+                                <li>
+                                    @exam.Subject - @exam.StartTime - @exam.EndTime
+                                    @if (isOngoing)
+                                    {
+                                        <span style="color: red;">(Ongoing)</span>
+                                    }
+                                </li>
+                            }
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+           
         </div>
-      @*   <div class="section">
-            <h2>Notifications</h2>
-            <ul>
-                @foreach (var notification in Model.Notifications)
-                {
-                    <li>@notification.Message</li>
-                }
-            </ul>
-        </div> *@
     </div>
-</div>
+</body>
+</html>
