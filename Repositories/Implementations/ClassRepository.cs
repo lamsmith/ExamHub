@@ -68,6 +68,11 @@ namespace ExamHub.Repositories.Implementations
             _context.ClassSubjects.Add(classSubject);
             _context.SaveChanges();
         }
+
+        public int GetTotalClasses()
+        {
+            return _context.Classes.Count();
+        }
     }
 }
 

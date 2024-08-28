@@ -87,5 +87,10 @@ namespace ExamHub.Services.Implementations
          
             _classRepository.AddClassSubject(classSubject);
         }
+
+        public int GetTotalClasses()
+        {
+            return _classRepository.GetTotalClasses();
+        }
     }
 }

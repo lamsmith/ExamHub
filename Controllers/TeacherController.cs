@@ -56,14 +56,6 @@ namespace ExamHub.Controllers
         {
             var students = _studentService.GetStudentsByClass(classId);
 
-            //var viewModel = new ClassStudentsViewModel
-            //{
-            //    Students = students.Select(s => new StudentResponseModel
-            //    {
-            //        Class = 
-            //    }
-            //    )
-            //};
 
             var viewModel = new ClassStudentsViewModel
             {
@@ -77,10 +69,24 @@ namespace ExamHub.Controllers
             return View(viewModel);
         }
 
-        public IActionResult SetExam()
+        public IActionResult SetExam(SetExamViewModel model)
         {
             var teacherName = User.Identity.Name;
             var teacher = _teacherService.GetTeacherByName(teacherName);
+
+           
+            bool examExists = _examService.ExamExistsForClassAndTimeframe(model.ClassId, model.StartTime, model.EndTime);
+
+            if (examExists)
+            {
+               
+                ModelState.AddModelError("", "An exam has already been set for this class and timeframe.");
+                model.TeacherId = teacher.Id;
+                model.Classes = teacher.ClassTeachers.Select(ct => ct.Class).ToList();
+                model.Subjects = teacher.SubjectTeachers.Select(st => st.Subject).ToList();
+                return View(model);
+            }
+
 
             var viewModel = new SetExamViewModel
             {
@@ -163,35 +169,39 @@ namespace ExamHub.Controllers
             return View(model);
         }
 
-        public IActionResult ViewExamQuestion(int id)
+        public IActionResult ViewExamQuestions()
         {
-            // Fetch the exam question from the service using the provided id
-            var examQuestion = _examService.GetExamQuestionById(id);
+            var stringUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = int.Parse(stringUserId);
 
-            // Check if the exam question exists
-            if (examQuestion == null)
+            var teacher = _teacherService.GetTeacherByUserId(userId);
+
+            var examQuestions = _examService.GetExamQuestionsByTeacherId(teacher.Id);
+
+            if (examQuestions == null || !examQuestions.Any())
             {
-                return NotFound(); // Or you can return a custom error view
+                return NotFound();
             }
 
-            // Map the entity to the view model
-            var viewModel = new ExamQuestionsViewModel
+            var viewModel = examQuestions.Select(eq => new ExamQuestionsViewModel
             {
-                Id = examQuestion.Id,
-                ExamId = examQuestion.ExamId,
-                QuestionNo = examQuestion.QuestionNo,
-                QuestionText = examQuestion.QuestionText,
-                CorrectAnswer = examQuestion.CorrectAnswer,
-                Options = examQuestion.Options.Select(o => new OptionViewModel
+                Id = eq.Id,
+                ExamId = eq.ExamId,
+                QuestionNo = eq.QuestionNo,
+                QuestionText = eq.QuestionText,
+                CorrectAnswer = eq.CorrectAnswer,
+                Options = eq.Options.Select(o => new OptionViewModel
                 {
                     OptionId = o.Id,
                     OptionText = o.OptionText
                 }).ToList()
-            };
+            }).ToList();
 
-            // Pass the view model to the view
             return View(viewModel);
         }
+
+
+
 
         [HttpPost]
         public IActionResult EditExamQuestion(EditExamQuestionViewModel model)

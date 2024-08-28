@@ -31,6 +31,7 @@ namespace ExamHub.Controllers
                 PrincipalName = User.Identity.Name,
                 TotalTeachers = _teacherService.GetTotalTeachers(),
                 TotalStudents = _studentService.GetTotalStudents(),
+                TotalClasses = _classService.GetTotalClasses(),
                 Classes = _classService.GetAllClasses()
             };
             return View(phgvu);

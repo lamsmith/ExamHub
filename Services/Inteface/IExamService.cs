@@ -27,7 +27,10 @@ namespace ExamHub.Services.Inteface
         ExamQuestion GetExamQuestionById(int id);
         void UpdateExamQuestion(ExamQuestion examQuestion);
         void DeleteExamQuestion(int id);
-       
+        public IEnumerable <ExamQuestion> GetExamQuestionsByTeacherId(int teacherId);
+        public bool ExamExistsForClassAndTimeframe(int classId, DateTime startTime, DateTime endTime);
+
+
 
         public StudentResponseModel SaveExam(TakeExamViewModel takeExamViewModel);
 

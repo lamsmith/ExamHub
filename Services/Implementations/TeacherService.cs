@@ -1,6 +1,7 @@
 ﻿using ExamHub.DTO;
 using ExamHub.Entity;
 using ExamHub.Enum;
+using ExamHub.Repositories.Implementation;
 using ExamHub.Repositories.Implementations;
 using ExamHub.Repositories.Interface;
 using ExamHub.Services.Inteface;
@@ -14,12 +15,14 @@ namespace ExamHub.Services.Implementations
         private readonly ITeacherRepository _teacherRepository;
         private readonly ISubjectTeacherRepository _subjectTeacherRepository;
         private readonly IClassTeacherRepository _classTeacherRepository;
+        private readonly IExamRepository _examRepository;
 
-        public TeacherService(ITeacherRepository teacherService, ISubjectTeacherRepository subjectTeacherRepository,IClassTeacherRepository classTeacherRepository)
+        public TeacherService(ITeacherRepository teacherService, ISubjectTeacherRepository subjectTeacherRepository,IClassTeacherRepository classTeacherRepository,IExamRepository examRepository)
         {
             _teacherRepository = teacherService ;
             _subjectTeacherRepository = subjectTeacherRepository;
             _classTeacherRepository = classTeacherRepository;
+            _examRepository = examRepository;
         }
 
         public IEnumerable<TeacherResponseModel> GetAllTeachersByPrincipal()
@@ -148,7 +151,14 @@ namespace ExamHub.Services.Implementations
         {
             return _teacherRepository.GetTeacherById(id);
         }
+        public IEnumerable <ExamQuestion> GetExamQuestionsByTeacherId(int teacherId)
+        {
+            return _examRepository.GetExamQuestionsByTeacherId(teacherId);
+        }
 
-
+        public ExamQuestion GetExamQuestionByIdAndTeacherId(int examQuestionId, int teacherId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

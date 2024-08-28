@@ -172,7 +172,7 @@ namespace ExamHub.Services.Implementations
         {
             _examRepository.SaveExamResult(examResult);
         }
-        public List<ExamQuestion> GetExamQuestionsForExam(int examId)
+        public IEnumerable <ExamQuestion> GetExamQuestionsForExam(int examId)
         {
             return _examRepository.GetExamQuestionsForExam(examId);
         }
@@ -276,12 +276,19 @@ namespace ExamHub.Services.Implementations
             _examRepository.DeleteExamQuestion(id);
         }
 
+        public IEnumerable <ExamQuestion> GetExamQuestionsByTeacherId(int teacherId)
+        {
+            return _examRepository.GetExamQuestionsByTeacherId(teacherId);
+        }
 
-
-
-
-
-
+        List<ExamQuestion> IExamService.GetExamQuestionsForExam(int examId)
+        {
+            throw new NotImplementedException();
+        }
+        public bool ExamExistsForClassAndTimeframe(int classId, DateTime startTime, DateTime endTime)
+        {
+            return _examRepository.ExamExistsForClassAndTimeframe(classId, startTime, endTime);
+        }
     }
 
 }

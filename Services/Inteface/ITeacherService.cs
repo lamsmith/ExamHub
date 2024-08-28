@@ -21,6 +21,7 @@ namespace ExamHub.Services.Inteface
         public void RemoveTeacherFromSubject(int teacherId, int subjectId);
         public void DeleteTeacher(int teacherId);
         Teacher GetTeacherById(int id);
+        public ExamQuestion GetExamQuestionByIdAndTeacherId(int examQuestionId, int teacherId);
 
 
 

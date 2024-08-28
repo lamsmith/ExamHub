@@ -1,4 +1,5 @@
 ﻿using ExamHub.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExamHub.Repositories.Interface
 {
@@ -12,5 +13,7 @@ namespace ExamHub.Repositories.Interface
         void DeleteClass(int id);
         IEnumerable<Class> GetAllClassTeachers(int teacherId);
         void AddClassSubject(ClassSubject classSubject);
+        public int GetTotalClasses();
+       
     }
 }
