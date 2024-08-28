@@ -1,5 +1,6 @@
 ﻿using ExamHub.DTO;
 using ExamHub.Entity;
+using ExamHub.Repositories.Implementation;
 
 namespace ExamHub.Repositories.Interface
 {
@@ -20,13 +21,16 @@ namespace ExamHub.Repositories.Interface
         IEnumerable<Exam> GetExamsForStudent(int classId);
         IEnumerable<Exam> GetUpcomingExamsByClass(int classId);
         public void SaveExamResult(ExamResult examResult);
-        public List<ExamQuestion> GetExamQuestionsForExam(int examId);
-        public List<StudentAnswer> GetStudentAnswersForExam(int studentId, int examId);
+        public IEnumerable<ExamQuestion> GetExamQuestionsForExam(int examId);
+        public IEnumerable<StudentAnswer> GetStudentAnswersForExam(int studentId, int examId);
         public IEnumerable<StudentAnswerResponseModel> GetSelectedOptionTextsForExam(int examId, int studentId);
         // IEnumerable<ExamResult> GetRecentExamResults(int studentId);
         ExamQuestion GetExamQuestionById(int id);
         void UpdateExamQuestion(ExamQuestion examQuestion);
         void DeleteExamQuestion(int id);
+        public IEnumerable<ExamQuestion> GetExamQuestionsByTeacherId(int teacherId);
+        public bool ExamExistsForClassAndTimeframe(int classId, DateTime startTime, DateTime endTime);
+
 
     }
 }

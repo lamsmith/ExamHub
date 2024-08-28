@@ -26,7 +26,7 @@ namespace ExamHub.Repositories.Implementation
 
         public void AddExam(Exam exam)
         {
-            //exam.Id = _context.Exams.ToList().Count + 1;
+           
             _context.Exams.Add(exam);
             _context.SaveChanges();
         }
@@ -142,12 +142,12 @@ namespace ExamHub.Repositories.Implementation
             return upcomingExams;
         }
 
-        public List<ExamQuestion> GetExamQuestionsForExam(int examId)
+        public IEnumerable<ExamQuestion> GetExamQuestionsForExam(int examId)
         {
             return _context.ExamQuestions.Where(eq => eq.ExamId == examId).ToList();
         }
 
-        public List<StudentAnswer> GetStudentAnswersForExam(int studentId, int examId)
+        public IEnumerable<StudentAnswer> GetStudentAnswersForExam(int studentId, int examId)
         {
             return _context.StudentAnswers
                 .Where(sa => sa.StudentId == studentId && sa.ExamQuestion.ExamId == examId)
@@ -195,6 +195,23 @@ namespace ExamHub.Repositories.Implementation
                 _context.ExamQuestions.Remove(question);
             }
         }
+
+        public IEnumerable<ExamQuestion> GetExamQuestionsByTeacherId(int teacherId)
+        {
+            return _context.ExamQuestions
+                           .Include(eq => eq.Options)
+                           .Where(eq => eq.Exam.CreatedByTeacherId == teacherId)
+                           .ToList();
+        }
+
+        public bool ExamExistsForClassAndTimeframe(int classId, DateTime startTime, DateTime endTime)
+        {
+            return _context.Exams.Any(e =>
+                e.ClassId == classId &&
+                ((e.StartTime >= startTime && e.StartTime <= endTime) ||
+                 (e.EndTime >= startTime && e.EndTime <= endTime)));
+        }
+
 
     }
 

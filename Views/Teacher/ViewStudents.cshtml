@@ -1,26 +1,57 @@
 ﻿@model ExamHub.ViewModel.ClassStudentsViewModel
 
 @{
-    ViewData["Title"] = "View Students";
     Layout = null;
 }
 
-<h2>View Students</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Full Name</th>
-            <th>Class</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var student in Model.Students)
-        {
-            <tr>
-                <td>@student.FullName</td>
-                <td>@student.ClassName</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Students</title>
+    <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li><a asp-action="Dashboard" asp-controller="Teacher">Home</a></li>
+                <li><a asp-action="SetExam" asp-controller="Teacher">Set Exam</a></li>
+                <li><a asp-action="ViewStudents" asp-controller="Teacher">View Students</a></li>
+                <li><a asp-action="ViewExamScores" asp-controller="Teacher">View Exam Scores</a></li>
+                <li><a asp-action="ViewExamQuestion" asp-controller="Teacher">View Exam Questions</a></li>
+                <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <header>
+                <h1>View Students</h1>
+               @*  <p>Class: @Model.ClassName</p> *@
+            </header>
+            <section class="cards">
+                <div class="card">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Class</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model.Students)
+                            {
+                                <tr>
+                                    <td>@student.FullName</td>
+                                    <td>@student.ClassName</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

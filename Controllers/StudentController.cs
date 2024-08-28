@@ -117,7 +117,7 @@ namespace ExamHub.Controllers
                 return NotFound();
             }
 
-            // Check if the student has already taken the exam
+          
             var studentExam = _context.StudentExams
                 .FirstOrDefault(se => se.ExamId == examId && se.StudentId == student.Id);
 
@@ -128,14 +128,13 @@ namespace ExamHub.Controllers
             }
 
             var now = DateTime.Now;
-            // Check if the current time is before the exam start time
+            
             if (now < exam.StartTime)
             {
                 TempData["ErrorMessage"] = "You cannot start the exam until the assigned start time.";
                 return RedirectToAction("Exams", new { classId = exam.ClassId });
             }
 
-            // Check if the current time is after the exam end time
             if (now > exam.EndTime)
             {
                 TempData["ErrorMessage"] = "The time to take this exam has expired.";

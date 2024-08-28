@@ -12,5 +12,6 @@ namespace ExamHub.Services.Inteface
         void DeleteClass(int id);
         IEnumerable<Class> GetAllClassTeachers(int teacherId);
         void AssignSubjectToClass(int classId, int subjectId);
+        public int GetTotalClasses();
     }
 }
