@@ -11,5 +11,8 @@ namespace ExamHub.Services.Inteface
         Task<IEnumerable<GeneralExamResult>> GetResultsForTeacherAsync(string teacherName, int examId);
         Task<IEnumerable<GeneralExamResult>> GetResultsForStudentAsync(string studentName);
         public GeneralExamResultViewModel GetGeneralExamResultForStudent(int studentId);
+        Task<IEnumerable<GeneralExamResultViewModel>> GetResultsByClassIdAsync(int classId);
+
+
     }
 }

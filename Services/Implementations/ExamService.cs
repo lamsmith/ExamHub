@@ -256,7 +256,7 @@ namespace ExamHub.Services.Implementations
             }
 
             // Calculate the percentage
-            double percentage = ((double)score / totalQuestions) * 100;
+            double percentage = Math.Ceiling((double)score / totalQuestions) * 100;
 
             return percentage;
         }
@@ -288,6 +288,12 @@ namespace ExamHub.Services.Implementations
         public bool ExamExistsForClassAndTimeframe(int classId, DateTime startTime, DateTime endTime)
         {
             return _examRepository.ExamExistsForClassAndTimeframe(classId, startTime, endTime);
+        }
+
+        public async Task<IEnumerable<ExamResult>> GetExamResultsBySubjectAsync(int subjectId)
+        {
+            // Perform any additional business logic if needed
+            return await _examResultRepository.GetExamResultsBySubjectAsync(subjectId);
         }
     }
 

@@ -11,13 +11,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Students</title>
     <link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+    <style>
+        /* Optional: Add some table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table-container {
+            margin: 0 auto;
+            max-width: 800px; /* Limit table width */
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            height: 100%;
+        }
+
+            .sidebar ul {
+                list-style: none;
+                padding: 0;
+            }
+
+                .sidebar ul li {
+                    margin: 20px 0;
+                }
+
+                    .sidebar ul li a {
+                        color: white;
+                        text-decoration: none;
+                    }
+
+                        .sidebar ul li a:hover {
+                            text-decoration: underline;
+                        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        header h1 {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
         <div class="sidebar">
             <h2>Dashboard</h2>
             <ul>
-                <li><a asp-action="Dashboard" asp-controller="Teacher">Home</a></li>
+                <li><a asp-action="Index" asp-controller="Teacher">Home</a></li>
                 <li><a asp-action="SetExam" asp-controller="Teacher">Set Exam</a></li>
                 <li><a asp-action="ViewStudents" asp-controller="Teacher">View Students</a></li>
                 <li><a asp-action="ViewExamScores" asp-controller="Teacher">View Exam Scores</a></li>
@@ -28,15 +99,15 @@
         <div class="main-content">
             <header>
                 <h1>View Students</h1>
-               @*  <p>Class: @Model.ClassName</p> *@
             </header>
-            <section class="cards">
+            <section class="table-container">
                 <div class="card">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Full Name</th>
-                                <th>Class</th>
+                                <th>Gender</th>
+                                <th>Date of Birth</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,7 +115,8 @@
                             {
                                 <tr>
                                     <td>@student.FullName</td>
-                                    <td>@student.ClassName</td>
+                                    <td>@student.Gender</td>
+                                    <td>@student.DateOfBirth.ToString("MM/dd/yyyy")</td> <!-- Formatting the date -->
                                 </tr>
                             }
                         </tbody>

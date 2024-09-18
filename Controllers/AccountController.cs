@@ -28,7 +28,7 @@ namespace ExamHub.Controllers
         {
             var user = _userService.Authenticate(loginRequestModel.Username,loginRequestModel.Password);
             if (user == null)
-            {
+            { 
                 ViewBag.ErrorMessage = "Invalid login attempt";
                 return View();
             }

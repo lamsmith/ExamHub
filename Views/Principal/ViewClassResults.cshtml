@@ -1,0 +1,79 @@
+﻿@model ExamHub.ViewModel.PrincipalDashboardViewModel
+
+@{
+    Layout = null;
+}
+
+<title>Class Results</title>
+<link rel="stylesheet" href="~/css/PrincipalDashBoard.css">
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/ExamHub.styles.css" asp-append-version="true" />
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a asp-action="Index" asp-controller="Principal">Home</a></li>
+            <li><a asp-action="ViewTeachers" asp-controller="Principal">Teachers</a></li>
+            <li><a asp-action="ViewStudents" asp-controller="Principal">Students</a></li>
+            <li><a asp-action="ManageClasses" asp-controller="Principal">Classes</a></li>
+            <li><a asp-action="ManageSubjects" asp-controller="Principal">Subjects</a></li>
+            <li><a asp-action="ViewClassResults" asp-controller="Principal">Class Results</a></li>
+            <li><a asp-action="Settings" asp-controller="Principal">Settings</a></li>
+            <li><a asp-action="Logout" asp-controller="Account">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Class Results</h1>
+            <p>View and filter results by class</p>
+        </header>
+        <section class="filter-class">
+            <form asp-action="ViewClassResults" asp-controller="Principal" method="get">
+                <label for="classId">Select Class:</label>
+                <select id="classId" name="classId">
+                    <option value="">-- Select Class --</option>
+                    @foreach (var cls in Model.Classes)
+                    {
+                        <option value="@cls.Id">@cls.ClassName</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </section>
+        <section class="class-results">
+            @if (Model.Results != null && Model.Results.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Class</th>
+                            <th>Exam</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var result in Model.Results)
+                        {
+                            <tr>
+                                <td>@result.StudentName</td>
+                                <td>@result.ClassName</td>
+                                <td>@result.ExamTitle</td>
+                                <td>@result.Score</td>
+                               
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No results found for the selected class.</p>
+            }
+        </section>
+    </div>
+</div>

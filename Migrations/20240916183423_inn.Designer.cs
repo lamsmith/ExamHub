@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExamHub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240826200732_init")]
-    partial class init
+    [Migration("20240916183423_inn")]
+    partial class inn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,7 +57,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 1,
                             ClassName = "JSS 1",
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8341),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5829),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -65,7 +65,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 2,
                             ClassName = "JSS 2",
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8347),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5834),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -73,7 +73,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 3,
                             ClassName = "JSS 3",
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8351),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5838),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -81,7 +81,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 4,
                             ClassName = "SSS 1",
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8355),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5842),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         },
@@ -89,7 +89,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 5,
                             ClassName = "SSS 2",
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8360),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5846),
                             CreatedBy = "1",
                             CreatedByPrincipalId = 0
                         });
@@ -239,7 +239,7 @@ namespace ExamHub.Migrations
                         {
                             Id = 1,
                             ClassId = 1,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8588),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5960),
                             CreatedBy = "1",
                             CreatedByTeacherId = 1,
                             EndTime = new DateTime(2024, 8, 4, 17, 30, 0, 0, DateTimeKind.Unspecified),
@@ -273,24 +273,6 @@ namespace ExamHub.Migrations
                     b.HasIndex("ExamId");
 
                     b.ToTable("ExamQuestions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CorrectAnswer = 2,
-                            ExamId = 1,
-                            QuestionNo = 1,
-                            QuestionText = "What is 2+2?"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CorrectAnswer = 7,
-                            ExamId = 1,
-                            QuestionNo = 2,
-                            QuestionText = "What is the secret code?"
-                        });
                 });
 
             modelBuilder.Entity("ExamHub.Entity.ExamResult", b =>
@@ -442,64 +424,6 @@ namespace ExamHub.Migrations
                     b.HasIndex("ExamQuestionId");
 
                     b.ToTable("Options", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ExamQuestionId = 1,
-                            OptionLabel = "A",
-                            OptionText = "3"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ExamQuestionId = 1,
-                            OptionLabel = "B",
-                            OptionText = "4"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ExamQuestionId = 1,
-                            OptionLabel = "C",
-                            OptionText = "5"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ExamQuestionId = 1,
-                            OptionLabel = "D",
-                            OptionText = "6"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ExamQuestionId = 2,
-                            OptionLabel = "A",
-                            OptionText = "abc"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ExamQuestionId = 2,
-                            OptionLabel = "B",
-                            OptionText = "123"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            ExamQuestionId = 2,
-                            OptionLabel = "C",
-                            OptionText = "zxsdc"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            ExamQuestionId = 2,
-                            OptionLabel = "D",
-                            OptionText = "xyz"
-                        });
                 });
 
             modelBuilder.Entity("ExamHub.Entity.Principal", b =>
@@ -534,7 +458,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8129),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5708),
                             CreatedBy = "1",
                             UserId = 1
                         });
@@ -571,21 +495,21 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5485),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(4333),
                             CreatedBy = "admin",
                             Name = "Principal"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5513),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(4354),
                             CreatedBy = "admin",
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(5517),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(4358),
                             CreatedBy = "admin",
                             Name = "Student"
                         });
@@ -623,7 +547,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7403),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5181),
                             CreatedBy = "1",
                             UserId = 3
                         });
@@ -734,7 +658,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8468),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5896),
                             CreatedBy = "1",
                             PrincipalId = 1,
                             SubjectName = "Math"
@@ -831,7 +755,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(8247),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5776),
                             CreatedBy = "1",
                             UserId = 2
                         });
@@ -891,7 +815,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(6901),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(4998),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(2000, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "ib",
@@ -904,7 +828,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7050),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5083),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(1999, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Mko",
@@ -917,7 +841,7 @@ namespace ExamHub.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 8, 26, 21, 7, 29, 699, DateTimeKind.Local).AddTicks(7144),
+                            CreatedAt = new DateTime(2024, 9, 16, 19, 34, 21, 90, DateTimeKind.Local).AddTicks(5125),
                             CreatedBy = "1",
                             DateOfBirth = new DateTime(2005, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "jnr",

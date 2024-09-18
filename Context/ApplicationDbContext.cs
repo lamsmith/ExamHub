@@ -57,14 +57,14 @@ namespace ExamHub.Context
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-     
+
 
             modelBuilder.Entity<ExamQuestion>()
                .HasMany(eq => eq.Options)
                .WithOne(o => o.ExamQuestion)
                .HasForeignKey(o => o.ExamQuestionId);
 
-           
+
 
             modelBuilder.Entity<ExamResult>()
                 .HasOne(er => er.Student)
@@ -158,14 +158,14 @@ namespace ExamHub.Context
               });
 
             modelBuilder.Entity<Student>().HasData(
-               new Student { Id = 1, UserId = 3, CreatedAt = DateTime.Now,CreatedBy = "1",  }
-                ) ;
+               new Student { Id = 1, UserId = 3, CreatedAt = DateTime.Now, CreatedBy = "1", }
+                );
 
             modelBuilder.Entity<ClassStudent>().HasData(
-                new ClassStudent { Id = 1, StudentId = 1,  ClassId = 1,}
+                new ClassStudent { Id = 1, StudentId = 1, ClassId = 1, }
                 );
             modelBuilder.Entity<ClassSubject>().HasData(
-                new ClassSubject { Id = 1, SubjectId = 1, ClassId = 1,}
+                new ClassSubject { Id = 1, SubjectId = 1, ClassId = 1, }
                 );
             modelBuilder.Entity<ClassTeacher>().HasData(
                 new ClassTeacher { Id = 1, TeacherId = 1, ClassId = 1, }
@@ -180,13 +180,13 @@ namespace ExamHub.Context
                 new SubjectTeacher { Id = 1, TeacherId = 1, SubjectId = 1, }
                 );
 
-            
+
             modelBuilder.Entity<Principal>().HasData(
              new Principal { Id = 1, UserId = 1, CreatedBy = "1", CreatedAt = DateTime.Now }
                );
 
             modelBuilder.Entity<Teacher>().HasData(
-                new Teacher{ Id = 1, UserId = 2,CreatedBy = "1", CreatedAt = DateTime.Now }
+                new Teacher { Id = 1, UserId = 2, CreatedBy = "1", CreatedAt = DateTime.Now }
                  );
 
             modelBuilder.Entity<Class>().HasData(
@@ -196,41 +196,28 @@ namespace ExamHub.Context
                new Class { Id = 4, ClassName = "SSS 1", CreatedBy = "1", CreatedAt = DateTime.Now },
                new Class { Id = 5, ClassName = "SSS 2", CreatedBy = "1", CreatedAt = DateTime.Now }
 
-               ) ;
+               );
 
             modelBuilder.Entity<Subject>().HasData(
-                new Subject { Id = 1, SubjectName = "Math", CreatedBy = "1", CreatedAt = DateTime.Now, PrincipalId= 1 }
+                new Subject { Id = 1, SubjectName = "Math", CreatedBy = "1", CreatedAt = DateTime.Now, PrincipalId = 1 }
                 );
 
             modelBuilder.Entity<Exam>().HasData(
-                new Exam { Id = 1, ClassId = 1, CreatedByTeacherId = 1, ExamName = "frist term", SubjectId = 1, CreatedBy = "1", CreatedAt = DateTime.Now,
-                    StartTime = DateTime.Parse("08/04/2024 15:30"), EndTime = DateTime.Parse("08/04/2024 17:30")
+                new Exam
+                {
+                    Id = 1,
+                    ClassId = 1,
+                    CreatedByTeacherId = 1,
+                    ExamName = "frist term",
+                    SubjectId = 1,
+                    CreatedBy = "1",
+                    CreatedAt = DateTime.Now,
+                    StartTime = DateTime.Parse("08/04/2024 15:30"),
+                    EndTime = DateTime.Parse("08/04/2024 17:30")
                 }
                  );
 
-            // First ExamQuestion
-            modelBuilder.Entity<ExamQuestion>().HasData(
-                new ExamQuestion { Id = 1, QuestionNo = 1, QuestionText = "What is 2+2?", CorrectAnswer = 2, ExamId = 1 }
-            );
-
-            modelBuilder.Entity<Option>().HasData(
-                new Option { Id = 1, ExamQuestionId = 1, OptionLabel = "A", OptionText = "3" },
-                new Option { Id = 2, ExamQuestionId = 1, OptionLabel = "B", OptionText = "4" }, // This is the correct answer
-                new Option { Id = 3, ExamQuestionId = 1, OptionLabel = "C", OptionText = "5" },
-                new Option { Id = 4, ExamQuestionId = 1, OptionLabel = "D", OptionText = "6" }
-            );
-
-            // Second ExamQuestion
-            modelBuilder.Entity<ExamQuestion>().HasData(
-                new ExamQuestion { Id = 2, QuestionNo = 2, QuestionText = "What is the secret code?", CorrectAnswer = 7, ExamId = 1 }
-            );
-
-            modelBuilder.Entity<Option>().HasData(
-                new Option { Id = 5, ExamQuestionId = 2, OptionLabel = "A", OptionText = "abc" },
-                new Option { Id = 6, ExamQuestionId = 2, OptionLabel = "B", OptionText = "123" },
-                new Option { Id = 7, ExamQuestionId = 2, OptionLabel = "C", OptionText = "zxsdc" }, // This is the correct answer
-                new Option { Id = 8, ExamQuestionId = 2, OptionLabel = "D", OptionText = "xyz" }
-            );
+           
 
 
 

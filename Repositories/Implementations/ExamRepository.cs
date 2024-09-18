@@ -213,6 +213,15 @@ namespace ExamHub.Repositories.Implementation
         }
 
 
+        public async Task<IEnumerable<ExamResult>> GetExamResultsBySubjectAsync(int subjectId)
+        {
+            return await _context.ExamResults
+                                 .Include(er => er.Exam) 
+                                 .Where(er => er.Exam.SubjectId == subjectId)
+                                 .ToListAsync();
+        }
+
+
     }
 
 

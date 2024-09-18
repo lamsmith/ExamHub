@@ -119,19 +119,6 @@ namespace ExamHub.Controllers
             
         }
 
-      
-
-        //[HttpPost]
-        //public IActionResult CreateSubject(CreateSubjectViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _subjectService.CreateSubject(model.Name);
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(model);
-        //}
 
         public IActionResult AssignSubject()
         {
@@ -442,13 +429,14 @@ namespace ExamHub.Controllers
             _teacherService.DeleteTeacher(id);
             return RedirectToAction("ViewTeachers");
         }
-        
-        public async Task<IActionResult> ViewResults()
-        {
 
-            var results = await _generalExamResultService.GetAllResultsForPrincipalAsync("Admin");
+        [HttpGet]
+        public async Task<IActionResult> ViewClassResults(int classId)
+        {
+            var results = await _generalExamResultService.GetResultsByClassIdAsync(classId);
             return View(results);
         }
+
 
     }
 

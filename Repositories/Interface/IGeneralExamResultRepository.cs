@@ -1,4 +1,5 @@
 ﻿using ExamHub.Entity;
+using ExamHub.ViewModel;
 
 namespace ExamHub.Repositories.Interface
 {
@@ -14,5 +15,8 @@ namespace ExamHub.Repositories.Interface
         Task<IEnumerable<GeneralExamResult>> GetResultsForTeacherAsync(string teacherName, int examId);
         Task<IEnumerable<GeneralExamResult>> GetResultsForStudentAsync(string studentName);
         GeneralExamResult GetGeneralExamResultByStudentId(int studentId);
+        Task<IEnumerable<GeneralExamResult>> GetResultsByClassIdAsync(int classId);
+
+
     }
 }

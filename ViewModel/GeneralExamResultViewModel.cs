@@ -16,6 +16,9 @@ namespace ExamHub.ViewModel
         public string StudentName { get; set; }
         public double TotalPercentage { get; set; }
         public List<ExamResultViewModel> ExamResults { get; set; }
+        public string? ClassName { get; internal set; }
+        public object ExamTitle { get; internal set; }
+        public int? Score { get; internal set; }
     }
     public class GeneralExamResultDto
     {

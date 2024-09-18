@@ -43,4 +43,9 @@ public class ExamResultRepository : IExamResultRepository
     {
         await _context.SaveChangesAsync();
     }
+
+    public Task<IEnumerable<ExamResult>> GetExamResultsBySubjectAsync(int subjectId)
+    {
+        throw new NotImplementedException();
+    }
 }

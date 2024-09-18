@@ -36,34 +36,7 @@ public class GeneralExamResultRepository : IGeneralExamResultRepository
         _context.SaveChanges();
     }
 
-    //public void GeneralExamResultexists ()
-    //{
-    //    var generalExamResult = _context.GeneralExamResults
-    //            .FirstOrDefault(g => g.StudentId == studentExam.Id);
-    //}
-
-
-    //public async Task<GeneralExamResult> GetGeneralExamResultByIdAsync(int id)
-    //{
-    //    return await _context.GeneralExamResults.FindAsync(id);
-    //}
-
-    //public async Task<GeneralExamResult> GetGeneralExamResultByStudentIdAsync(int studentId)
-    //{
-    //    return await _context.GeneralExamResults
-    //        .Include(ger => ger.ExamResults)
-    //        .FirstOrDefaultAsync(ger => ger.StudentId == studentId);
-    //}
-
-    //public async Task AddGeneralExamResultAsync(GeneralExamResult generalExamResult)
-    //{
-    //    await _context.GeneralExamResults.AddAsync(generalExamResult);
-    //}
-
-    //public async Task SaveAsync()
-    //{
-    //    await _context.SaveChangesAsync();
-    //}
+    
 
     public async Task<IEnumerable<GeneralExamResult>> GetResultsForPrincipalAsync(string principalName)
     {
@@ -93,22 +66,24 @@ public class GeneralExamResultRepository : IGeneralExamResultRepository
 
         public GeneralExamResult GetGeneralExamResultByStudentId(int studentId)
         {
-        //return _context.GeneralExamResults
-        //    .Include(g => g.ExamResults)
-        //    .Include(ex => ex.Exam.Subject) 
-        //    .ThenInclude(er => er.Exam)
-        //    .FirstOrDefault(g => g.StudentId == studentId);
+       
                 return _context.GeneralExamResults
             .Include(g => g.ExamResults) // Include ExamResults
             .ThenInclude(er => er.Exam) // Then include the Exam related to each ExamResult
             .ThenInclude(e => e.Subject) // Then include the Subject related to each Exam
             .FirstOrDefault(g => g.StudentId == studentId);
+         }
+
+    public async Task<IEnumerable<GeneralExamResult>> GetResultsByClassIdAsync(int classId)
+    {
+        return await _context.GeneralExamResults
+          .Include(g => g.ExamResults) // Include ExamResults
+          .ThenInclude(er => er.Student) // Include the Student associated with each ExamResult
+          .ThenInclude(s => s.ClassStudents) // Include the ClassStudents related to the Student
+          .Where(g => g.ExamResults.Any(er => er.Student.ClassStudents.Any(cs => cs.ClassId == classId))) // Filter by class ID
+          .ToListAsync();
     }
 
-    //return _context.GeneralExamResults
 
-    //    .Include(g => g.ExamResults)
-    //    .Include(ex => ex.Exam.Subject)
-    //    .ThenInclude(er => er.Exam)
-    //    .FirstOrDefault(g => g.StudentId == studentId);
+
 }

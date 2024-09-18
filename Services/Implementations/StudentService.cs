@@ -48,17 +48,26 @@ namespace ExamHub.Services.Implementations
 
         public IEnumerable<StudentResponseModel> GetStudentsByClass(int classId)
         {
-            List<Student> students = classId == 0 ? _studentRepository.GetAllStudents().ToList() : _studentRepository.GetStudentsByClass(classId).ToList();
+            // Fetch the list of students based on classId
+            List<Student> students = classId == 0
+                ? _studentRepository.GetAllStudents().ToList()
+                : _studentRepository.GetStudentsByClass(classId).ToList();
 
+            // Map the list of students to StudentResponseModel
             return students.Select(s => new StudentResponseModel
             {
                 Id = s.Id,
                 FirstName = s.User.FirstName,
                 LastName = s.User.LastName,
                 UserName = s.User.Username,
-                ClassName = (s.ClassStudents.Select(cs => cs.Class).Count() > 0 ) ? s.ClassStudents.Select(cs => cs.Class).ToList()[0].ClassName : ""
+                Gender = s.User.Gender.ToString(), 
+                DateOfBirth = s.User.DateOfBirth,
+                ClassName = s.ClassStudents
+                              .Select(cs => cs.Class)
+                              .FirstOrDefault()?.ClassName ?? "" // Use FirstOrDefault for safety
             });
         }
+
 
         public IEnumerable<StudentResponseModel> GetStudents(int teacherId)
         {

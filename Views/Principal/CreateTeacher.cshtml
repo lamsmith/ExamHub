@@ -79,7 +79,7 @@
                         @if (Model.Subjects != null && Model.Subjects.Any())
                         {
                             @foreach (var subject in Model.Subjects)
-                            {
+                            {   
                                 <option value="@subject.Id">@subject.SubjectName</option>
                             }
                         }
@@ -90,3 +90,21 @@
         </section>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var firstNameInput = document.getElementById("FirstName");
+        var lastNameInput = document.getElementById("LastName");
+        var userNameInput = document.getElementById("UserName");
+        var passwordInput = document.getElementById("Password");
+
+        firstNameInput.addEventListener("input", function () {
+            userNameInput.value = firstNameInput.value;
+        });
+
+        lastNameInput.addEventListener("input", function () {
+            passwordInput.value = lastNameInput.value;
+        });
+    });
+
+</script>

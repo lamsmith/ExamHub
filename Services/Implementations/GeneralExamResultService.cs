@@ -19,10 +19,10 @@ public class GeneralExamResultService : IGeneralExamResultService
     //{
     //    return await _generalExamResultRepository.GetGeneralExamResultByStudentIdAsync(studentId);
     //}
-    public async Task<IEnumerable<GeneralExamResultDto>> GetAllResultsForPrincipalAsync(string principalName)
+    public async Task<IEnumerable<GeneralExamResult>> GetAllResultsForPrincipalAsync(string principalName)
     {
         var results = await _generalExamResultRepository.GetResultsForPrincipalAsync(principalName);
-        return results.ToList().Select(res => new GeneralExamResultDto
+        return results.ToList().Select(res => new GeneralExamResult
         {
             
         }) ;
@@ -60,8 +60,18 @@ public class GeneralExamResultService : IGeneralExamResultService
         return viewModel;
     }
 
-    Task<IEnumerable<GeneralExamResult>> IGeneralExamResultService.GetAllResultsForPrincipalAsync(string principalName)
+    public async Task<IEnumerable<GeneralExamResultViewModel>> GetResultsByClassIdAsync(int classId)
     {
-        throw new NotImplementedException();
+        var results = await _generalExamResultRepository.GetResultsByClassIdAsync(classId);
+
+        // Map the results to GeneralExamResultViewModel
+        return results.Select(g => new GeneralExamResultViewModel
+        {
+            StudentName = g.Student.User.FirstName  + " " + g.Student.User.LastName,
+            ClassName = g.ExamResults.FirstOrDefault()?.Student.ClassStudents.FirstOrDefault(cs => cs.ClassId == classId)?.Class.ClassName,
+            ExamTitle = g.ExamResults.FirstOrDefault()?.Exam.ExamName,
+            Score = g.ExamResults.FirstOrDefault()?.Score,
+           
+        });
     }
 }

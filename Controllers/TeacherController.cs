@@ -125,33 +125,33 @@ namespace ExamHub.Controllers
        
 
 
-        public IActionResult ViewExamScores()
-        {
-            var teacherName = User.Identity.Name;
-            var teacher = _teacherService.GetTeacherByName(teacherName);
+        //public IActionResult ViewExamScoress()
+        //{
+        //    var teacherName = User.Identity.Name;
+        //    var teacher = _teacherService.GetTeacherByName(teacherName);
 
-            if (teacher == null)
-                return NotFound();
+        //    if (teacher == null)
+        //        return NotFound();
 
-            var exams = _examService.GetExamsByTeacherId(teacher.Id);
+        //    var exams = _examService.GetExamsByTeacherId(teacher.Id);
 
-            var viewModel = new ViewExamScoresViewModel
-            {
-                Exams = exams.Select(e => new ExamResponseModel
-                {
-                    Id = e.Id,
-                    ExamName = e.ExamName,
-                    StartTime = e.StartTime,
-                    EndTime = e.EndTime,
-                    Class = e.Class,
-                    Subject = e.Subject
+        //    var viewModel = new ViewExamScoresViewModel
+        //    {
+        //        Exams = exams.Select(e => new ExamResponseModel
+        //        {
+        //            Id = e.Id,
+        //            ExamName = e.ExamName,
+        //            StartTime = e.StartTime,
+        //            EndTime = e.EndTime,
+        //            Class = e.Class,
+        //            Subject = e.Subject
                    
                     
-                }).ToList()
-            };
+        //        }).ToList()
+        //    };
 
-            return View(viewModel);
-        }
+        //    return View(viewModel);
+        //}
         public IActionResult ViewExamScores(int examId)
         {
             var exam = _examService.GetExamById(examId);
